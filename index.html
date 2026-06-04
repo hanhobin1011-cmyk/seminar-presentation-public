@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>HobinT 발표자료</title>
+  <style>
+    :root {
+      --bg: #030405;
+      --panel: #121418;
+      --panel-2: #191c22;
+      --text: #f6f7f9;
+      --muted: #9aa2ad;
+      --line: #303641;
+      --blue: #64a8ff;
+      --mint: #7ef0c1;
+      --pink: #ff7f99;
+      --yellow: #ffd68c;
+      --purple: #b28cff;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: var(--bg);
+      color: var(--text);
+      font-family: Inter, Pretendard, "Noto Sans KR", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .page {
+      width: min(1180px, calc(100vw - 48px));
+      margin: 0 auto;
+      padding: 72px 0 56px;
+    }
+
+    .eyebrow {
+      margin: 0 0 18px;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 850;
+      letter-spacing: 0;
+      text-transform: uppercase;
+    }
+
+    h1 {
+      max-width: 900px;
+      margin: 0;
+      font-size: clamp(42px, 6vw, 76px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      font-weight: 950;
+    }
+
+    .lead {
+      max-width: 760px;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: 22px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    .bar {
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr 1fr 1.3fr 0.9fr 0.8fr 0.8fr;
+      height: 14px;
+      margin: 52px 0;
+      border-radius: 999px;
+      overflow: hidden;
+      background: #c7cdd3;
+    }
+
+    .bar span:nth-child(1) { background: #c7cdd3; }
+    .bar span:nth-child(2) { background: var(--pink); }
+    .bar span:nth-child(3) { background: #ffb195; }
+    .bar span:nth-child(4) { background: var(--yellow); }
+    .bar span:nth-child(5) { background: var(--mint); }
+    .bar span:nth-child(6) { background: var(--blue); }
+    .bar span:nth-child(7) { background: var(--purple); }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 0 0 18px;
+    }
+
+    h2 {
+      margin: 0;
+      font-size: 28px;
+      line-height: 1.2;
+      font-weight: 920;
+    }
+
+    .hint {
+      margin: 0;
+      color: var(--muted);
+      font-size: 15px;
+      font-weight: 750;
+    }
+
+    .deck {
+      display: grid;
+      grid-template-columns: 0.95fr 1.05fr;
+      min-height: 420px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .deck-copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 34px;
+    }
+
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 30px;
+      padding: 6px 10px;
+      border: 1px solid #2d3542;
+      border-radius: 999px;
+      color: var(--muted);
+      background: #0d0f13;
+      font-size: 13px;
+      font-weight: 820;
+    }
+
+    .pill.done {
+      color: #07120e;
+      border-color: transparent;
+      background: var(--mint);
+    }
+
+    h3 {
+      margin: 0;
+      max-width: 620px;
+      font-size: 40px;
+      line-height: 1.15;
+      letter-spacing: 0;
+      font-weight: 950;
+    }
+
+    .desc {
+      margin: 18px 0 0;
+      max-width: 580px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    .actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 34px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
+      padding: 0 18px;
+      border: 1px solid #344052;
+      border-radius: 8px;
+      color: var(--text);
+      background: #1a1e26;
+      font-size: 16px;
+      font-weight: 900;
+    }
+
+    .button.primary {
+      color: #03100b;
+      border-color: transparent;
+      background: var(--mint);
+    }
+
+    .preview {
+      position: relative;
+      min-height: 100%;
+      background: #060708;
+      border-left: 1px solid var(--line);
+    }
+
+    .preview img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      opacity: 0.92;
+    }
+
+    .preview::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, rgba(18, 20, 24, 0.42), transparent 34%);
+      pointer-events: none;
+    }
+
+    footer {
+      margin-top: 48px;
+      padding-top: 22px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+      font-weight: 650;
+    }
+
+    @media (max-width: 860px) {
+      .page {
+        width: min(100% - 28px, 1180px);
+        padding-top: 42px;
+      }
+
+      .section-head {
+        display: block;
+      }
+
+      .hint {
+        margin-top: 8px;
+      }
+
+      .deck {
+        grid-template-columns: 1fr;
+      }
+
+      .preview {
+        min-height: 280px;
+        border-left: 0;
+        border-top: 1px solid var(--line);
+      }
+
+      .deck-copy {
+        padding: 24px;
+      }
+
+      h3 {
+        font-size: 30px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="eyebrow">Public Presentation Archive</p>
+    <h1>HobinT 발표자료</h1>
+    <p class="lead">공개 공유용 최종 발표자료만 모아둔 웹 페이지입니다.</p>
+
+    <div class="bar" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+
+    <div class="section-head">
+      <h2>완성 발표자료</h2>
+      <p class="hint">웹 발표 모드, 전체화면, 이미지 확대 지원</p>
+    </div>
+
+    <article class="deck">
+      <div class="deck-copy">
+        <div>
+          <div class="meta">
+            <span class="pill done">완료</span>
+            <span class="pill">22 slides</span>
+            <span class="pill">HTML deck</span>
+            <span class="pill">2026-06</span>
+          </div>
+          <h3>수학강사를 위한 AI 바이브 코딩 시작 가이드</h3>
+          <p class="desc">수학 강사를 대상으로 AI 바이브 코딩의 기본 세팅, 작업 환경 차이, 컨텍스트/하네스 엔지니어링, 실제 프로젝트 예시를 설명하는 1시간 발표자료입니다.</p>
+        </div>
+        <div class="actions">
+          <a class="button primary" href="./decks/ai-vibe-coding-math-teachers/">웹 발표 열기</a>
+          <a class="button" href="https://github.com/hanhobin1011-cmyk/seminar-presentation-public">GitHub 저장소</a>
+        </div>
+      </div>
+      <a class="preview" href="./decks/ai-vibe-coding-math-teachers/" aria-label="수학강사를 위한 AI 바이브 코딩 시작 가이드 웹 발표 열기">
+        <img src="./decks/ai-vibe-coding-math-teachers/assets/preview-cover.png" alt="수학강사를 위한 AI 바이브 코딩 시작 가이드 표지 미리보기">
+      </a>
+    </article>
+
+    <footer>
+      이 저장소에는 공개 가능한 최종 발표자료만 배포합니다. 작업 원본과 제작 과정 문서는 비공개 작업 저장소에서 관리합니다.
+    </footer>
+  </main>
+</body>
+</html>

@@ -1,0 +1,1385 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>수학강사를 위한 AI 바이브 코딩 시작 가이드</title>
+  <style>
+    :root {
+      --bg: #050505;
+      --bg-2: #101114;
+      --panel: #181a1f;
+      --panel-2: #20232a;
+      --text: #ffffff;
+      --muted: #b8bdc7;
+      --weak: #7e8591;
+      --line: #2b2f38;
+      --blue: #64a8ff;
+      --mint: #7ef0c1;
+      --pink: #ff7f9b;
+      --yellow: #ffd58a;
+      --purple: #b28cff;
+      --cyan: #83e6f2;
+      --peach: #ffb296;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      margin: 0;
+      min-height: 100%;
+      background: #000;
+      color: var(--text);
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      letter-spacing: 0;
+    }
+
+    body {
+      padding: 32px;
+      overflow-x: auto;
+    }
+
+    .deck {
+      display: grid;
+      gap: 32px;
+      justify-items: center;
+    }
+
+    body.presenting {
+      width: 100vw;
+      height: 100vh;
+      padding: 0;
+      overflow: hidden;
+      background: #000;
+    }
+
+    body.presenting .deck {
+      position: fixed;
+      inset: 0;
+      display: block;
+      background: #000;
+    }
+
+    body.presenting .slide {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      display: none;
+      border-radius: 0;
+      box-shadow: none;
+      transform: translate(-50%, -50%) scale(var(--slide-scale, 0.5));
+      transform-origin: center;
+    }
+
+    body.presenting .slide.active {
+      display: block;
+    }
+
+    .slide {
+      position: relative;
+      width: 1920px;
+      height: 1080px;
+      overflow: hidden;
+      background: var(--bg);
+      border: 1px solid #121318;
+      border-radius: 8px;
+      box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .deck-controls {
+      position: fixed;
+      right: 28px;
+      bottom: 28px;
+      z-index: 50;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 999px;
+      background: rgba(10, 11, 14, 0.78);
+      backdrop-filter: blur(14px);
+      box-shadow: 0 14px 42px rgba(0, 0, 0, 0.35);
+    }
+
+    .deck-controls button {
+      min-width: 48px;
+      height: 48px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 999px;
+      background: #171a22;
+      color: var(--text);
+      font: inherit;
+      font-size: 18px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .deck-controls button:hover,
+    .deck-controls button:focus-visible {
+      border-color: rgba(100, 168, 255, 0.82);
+      outline: none;
+      color: var(--blue);
+    }
+
+    .deck-controls .wide-control {
+      min-width: 104px;
+      padding: 0 18px;
+    }
+
+    .slide-status {
+      min-width: 78px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 17px;
+      font-weight: 850;
+    }
+
+    .inner {
+      position: absolute;
+      inset: 0;
+      padding: 92px 112px 78px;
+      display: flex;
+      flex-direction: column;
+      z-index: 1;
+    }
+
+    .label {
+      margin-bottom: 28px;
+      color: var(--weak);
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    h1,
+    h2,
+    h3,
+    p {
+      margin: 0;
+    }
+
+    h1 {
+      max-width: 1160px;
+      font-size: 98px;
+      line-height: 1.04;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    h2 {
+      max-width: 1080px;
+      font-size: 68px;
+      line-height: 1.12;
+      font-weight: 900;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      font-size: 38px;
+      line-height: 1.22;
+      font-weight: 850;
+      letter-spacing: 0;
+    }
+
+    .subtitle {
+      margin-top: 32px;
+      color: var(--muted);
+      font-size: 30px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .small {
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.5;
+    }
+
+    .meta {
+      margin-top: auto;
+      color: var(--muted);
+      font-size: 25px;
+      line-height: 1.4;
+      font-weight: 650;
+    }
+
+    .progress {
+      position: absolute;
+      left: 112px;
+      right: 112px;
+      bottom: 38px;
+      height: 18px;
+      display: grid;
+      grid-template-columns: 1.2fr 0.9fr 0.8fr 1.1fr 0.85fr 0.85fr 0.9fr 0.9fr 0.8fr;
+      overflow: hidden;
+      border-radius: 999px;
+      opacity: 0.98;
+      z-index: 3;
+    }
+
+    .progress span:nth-child(1) { background: #c5cbd1; }
+    .progress span:nth-child(2) { background: var(--pink); }
+    .progress span:nth-child(3) { background: var(--peach); }
+    .progress span:nth-child(4) { background: var(--yellow); }
+    .progress span:nth-child(5) { background: var(--mint); }
+    .progress span:nth-child(6) { background: var(--cyan); }
+    .progress span:nth-child(7) { background: var(--blue); }
+    .progress span:nth-child(8) { background: var(--purple); }
+    .progress span:nth-child(9) { background: #d989ff; }
+
+    .slide-no {
+      position: absolute;
+      right: 112px;
+      top: 76px;
+      color: #5f6672;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      z-index: 2;
+    }
+
+    .two-col {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 92px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .two-col.top {
+      align-items: start;
+    }
+
+    .agenda {
+      display: grid;
+      gap: 28px;
+      margin-top: 16px;
+    }
+
+    .agenda-item {
+      font-size: 40px;
+      line-height: 1.18;
+      font-weight: 850;
+    }
+
+    .agenda-item span {
+      display: inline-block;
+      width: 62px;
+      color: var(--muted);
+      font-weight: 800;
+    }
+
+    .keyword-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 48px;
+      max-width: 980px;
+    }
+
+    .keyword {
+      min-height: 118px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 26px 28px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .keyword strong {
+      font-size: 30px;
+      line-height: 1.22;
+      font-weight: 850;
+    }
+
+    .keyword em {
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 18px;
+      line-height: 1.35;
+      font-style: normal;
+      font-weight: 600;
+    }
+
+    .compare {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 28px;
+      margin-top: 50px;
+    }
+
+    .compare-card {
+      min-height: 420px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+      padding: 38px;
+    }
+
+    .compare-card .tag,
+    .pill {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 0 16px;
+      border-radius: 999px;
+      background: #172033;
+      color: var(--blue);
+      font-size: 18px;
+      font-weight: 850;
+    }
+
+    .compare-card h3 {
+      margin-top: 24px;
+      margin-bottom: 24px;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      color: var(--muted);
+      font-size: 25px;
+      line-height: 1.45;
+      font-weight: 650;
+    }
+
+    li + li {
+      margin-top: 14px;
+    }
+
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 22px;
+      margin-top: 56px;
+    }
+
+    .step {
+      min-height: 288px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: linear-gradient(180deg, #1b1e25 0%, #111318 100%);
+      padding: 30px;
+    }
+
+    .step-num {
+      color: var(--weak);
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: 0.06em;
+    }
+
+    .step h3 {
+      margin-top: 28px;
+      font-size: 32px;
+    }
+
+    .step p {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1.45;
+      font-weight: 600;
+    }
+
+    .checklist {
+      display: grid;
+      gap: 18px;
+      margin-top: 46px;
+      max-width: 980px;
+    }
+
+    .check {
+      display: grid;
+      grid-template-columns: 44px 1fr;
+      gap: 22px;
+      align-items: center;
+      min-height: 72px;
+      border-bottom: 1px solid var(--line);
+      color: var(--text);
+      font-size: 29px;
+      line-height: 1.25;
+      font-weight: 800;
+    }
+
+    .check::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      margin-left: 10px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 8px rgba(126, 240, 193, 0.12);
+    }
+
+    .loop-wrap {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 86px;
+      align-items: center;
+      height: 100%;
+    }
+
+    .loop {
+      position: relative;
+      width: 570px;
+      height: 570px;
+      margin: 0 auto;
+      border-radius: 50%;
+      background:
+        radial-gradient(circle at center, var(--bg) 0 53%, transparent 54%),
+        conic-gradient(var(--yellow), var(--pink), var(--blue), var(--mint), #c5cbd1, var(--yellow));
+    }
+
+    .loop::after {
+      content: "";
+      position: absolute;
+      inset: 18px;
+      border-radius: 50%;
+      background: var(--bg);
+    }
+
+    .loop-title {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      z-index: 1;
+      color: var(--text);
+      font-size: 34px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 1.22;
+    }
+
+    .node {
+      position: absolute;
+      z-index: 2;
+      width: 144px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 22px;
+      font-weight: 800;
+    }
+
+    .node::before {
+      content: "";
+      display: block;
+      width: 58px;
+      height: 58px;
+      margin: 0 auto 12px;
+      border-radius: 50%;
+      border: 2px solid var(--muted);
+      background: var(--bg);
+    }
+
+    .node.n1 { left: 226px; top: -6px; }
+    .node.n2 { right: -22px; top: 180px; }
+    .node.n3 { right: 54px; bottom: 28px; }
+    .node.n4 { left: 54px; bottom: 28px; }
+    .node.n5 { left: -22px; top: 180px; }
+
+    .formula {
+      display: grid;
+      gap: 18px;
+      margin-top: 42px;
+    }
+
+    .formula-row {
+      display: grid;
+      grid-template-columns: 220px 1fr;
+      gap: 24px;
+      align-items: center;
+      padding: 20px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .formula-row strong {
+      color: var(--text);
+      font-size: 26px;
+      font-weight: 900;
+    }
+
+    .formula-row span {
+      color: var(--muted);
+      font-size: 24px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
+    .showcase {
+      display: grid;
+      grid-template-columns: 0.46fr 0.54fr;
+      gap: 44px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .showcase-wide {
+      display: grid;
+      grid-template-columns: 0.34fr 0.66fr;
+      gap: 38px;
+      height: 100%;
+      align-items: center;
+    }
+
+    .shot-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
+    }
+
+    .shot-grid.one {
+      grid-template-columns: 1fr;
+    }
+
+    .shot-grid.blog-stack {
+      grid-template-columns: 1fr;
+    }
+
+    .shot {
+      position: relative;
+      min-height: 280px;
+      height: 300px;
+      border: 1px solid #333945;
+      border-radius: 8px;
+      background: #0d0e12;
+      overflow: hidden;
+      display: grid;
+      place-items: center;
+      cursor: zoom-in;
+    }
+
+    .shot.tall {
+      min-height: 610px;
+      height: 610px;
+    }
+
+    .showcase > .shot-grid .shot {
+      height: 610px;
+    }
+
+    .showcase > .shot-grid.blog-stack .shot {
+      min-height: 296px;
+      height: 296px;
+    }
+
+    .showcase-wide .shot-grid .shot {
+      height: 300px;
+    }
+
+    .shot.light {
+      background: #f5f5f2;
+    }
+
+    .shot img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      transition: transform 180ms ease;
+    }
+
+    .shot:hover img {
+      transform: scale(1.025);
+    }
+
+    .shot::after {
+      content: "클릭 확대";
+      position: absolute;
+      right: 18px;
+      bottom: 16px;
+      z-index: 2;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(0, 0, 0, 0.68);
+      color: #fff;
+      font-size: 15px;
+      font-weight: 850;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 160ms ease, transform 160ms ease;
+    }
+
+    .shot:hover::after,
+    .shot:focus-visible::after {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .shot:focus-visible {
+      outline: 3px solid var(--blue);
+      outline-offset: 4px;
+    }
+
+    .shot.crop-hand img {
+      object-fit: cover;
+      object-position: 54% 54%;
+    }
+
+    .shot.crop-admin img {
+      object-position: 52% 38%;
+    }
+
+    .shot.crop-db img {
+      object-position: 50% 18%;
+    }
+
+    .shot.crop-student img {
+      object-position: 50% 22%;
+    }
+
+    .shot.crop-report img {
+      object-position: 50% 14%;
+    }
+
+    .shot.crop-blog img {
+      object-position: 50% 12%;
+    }
+
+    .shot.crop-blog-text img {
+      object-position: 50% 0%;
+    }
+
+    .shot.contain img {
+      object-fit: cover;
+      background: #f6f6f2;
+    }
+
+    .fallback {
+      position: absolute;
+      inset: 0;
+      display: grid;
+      place-items: center;
+      padding: 28px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 22px;
+      line-height: 1.35;
+      font-weight: 800;
+      background:
+        linear-gradient(135deg, rgba(100, 168, 255, 0.12), rgba(178, 140, 255, 0.08)),
+        #111318;
+    }
+
+    .light .fallback {
+      color: #343842;
+      background: #f6f4ed;
+    }
+
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 56px;
+      background: rgba(0, 0, 0, 0.88);
+    }
+
+    .lightbox.open {
+      display: flex;
+    }
+
+    .lightbox img {
+      max-width: min(94vw, 1800px);
+      max-height: 86vh;
+      object-fit: contain;
+      border-radius: 8px;
+      background: #111;
+      box-shadow: 0 22px 80px rgba(0, 0, 0, 0.68);
+    }
+
+    .lightbox-title {
+      position: fixed;
+      left: 56px;
+      top: 34px;
+      color: #fff;
+      font-size: 22px;
+      font-weight: 850;
+    }
+
+    .lightbox-close {
+      position: fixed;
+      right: 42px;
+      top: 32px;
+      width: 54px;
+      height: 54px;
+      border: 1px solid rgba(255, 255, 255, 0.24);
+      border-radius: 50%;
+      background: rgba(20, 22, 28, 0.9);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .quote {
+      max-width: 1120px;
+      margin-top: 54px;
+      color: var(--muted);
+      font-size: 34px;
+      line-height: 1.38;
+      font-weight: 750;
+    }
+
+    .accent-blue { color: var(--blue); }
+    .accent-mint { color: var(--mint); }
+    .accent-pink { color: var(--pink); }
+    .accent-yellow { color: var(--yellow); }
+    .accent-purple { color: var(--purple); }
+
+    .mini-bars {
+      display: grid;
+      gap: 18px;
+      margin-top: 46px;
+      max-width: 760px;
+    }
+
+    .mini-bar {
+      display: grid;
+      grid-template-columns: 170px 1fr;
+      gap: 24px;
+      align-items: center;
+    }
+
+    .mini-bar strong {
+      font-size: 24px;
+      font-weight: 850;
+    }
+
+    .bar-track {
+      height: 16px;
+      border-radius: 999px;
+      background: #242833;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, var(--blue), var(--mint));
+    }
+
+    @media (max-width: 900px) {
+      body:not(.presenting) {
+        padding: 12px;
+      }
+    }
+
+    @media print {
+      body {
+        padding: 0;
+        background: #000;
+      }
+
+      .deck {
+        display: block;
+      }
+
+      .slide {
+        width: 100vw;
+        height: 100vh;
+        page-break-after: always;
+        border: 0;
+        border-radius: 0;
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body class="presenting">
+  <nav class="deck-controls" aria-label="발표 컨트롤">
+    <button type="button" id="prevSlide" aria-label="이전 슬라이드">‹</button>
+    <div class="slide-status" id="slideStatus">1 / 22</div>
+    <button type="button" id="nextSlide" aria-label="다음 슬라이드">›</button>
+    <button type="button" class="wide-control" id="toggleOverview">목록</button>
+    <button type="button" class="wide-control" id="toggleFullscreen">전체화면</button>
+  </nav>
+  <main class="deck">
+    <section class="slide">
+      <div class="inner">
+        <div class="label">AI CODING SEMINAR</div>
+        <h1>수학강사를 위한<br>AI 바이브 코딩<br>시작 가이드</h1>
+        <p class="subtitle">기본 세팅부터 실제 활용 노하우까지</p>
+        <p class="meta">대상: 학원 수학 강사<br>Produced by 호빈T</p>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">02 / 22</div>
+      <div class="inner">
+        <div class="two-col">
+          <div>
+            <div class="label">CONTENTS</div>
+            <h2>오늘 얻어갈 것</h2>
+            <p class="subtitle">개발자가 되는 강의가 아니라,<br>AI와 일하는 방식을 익히는 강의입니다.</p>
+          </div>
+          <div class="agenda">
+            <div class="agenda-item"><span>01</span>AI 바이브 코딩 이해</div>
+            <div class="agenda-item"><span>02</span>웹 LLM vs 작업환경</div>
+            <div class="agenda-item"><span>03</span>Codex 기본 작업 루프</div>
+            <div class="agenda-item"><span>04</span>프롬프트에서 하네스로</div>
+            <div class="agenda-item"><span>05</span>수학강사 프로젝트 쇼케이스</div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">03 / 22</div>
+      <div class="inner">
+        <div class="label">WHY NOW</div>
+        <h2>AI는 수업 준비와 운영의 진입장벽을 낮추고 있습니다.</h2>
+        <div class="keyword-grid">
+          <div class="keyword"><strong>수업 준비 시간</strong><em>문제 선별, 자료 초안, 설명 흐름 정리</em></div>
+          <div class="keyword"><strong>자료 품질</strong><em>해설, 예시, 구조화된 시각 자료</em></div>
+          <div class="keyword"><strong>학생별 피드백</strong><em>오답 유형, 보충 방향, 전달 문구</em></div>
+          <div class="keyword"><strong>반복 업무</strong><em>템플릿화하고 도구로 전환</em></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">04 / 22</div>
+      <div class="inner">
+        <div class="label">DEFINE</div>
+        <h2>바이브 코딩은<br><span class="accent-pink">"그냥 만들어줘"</span>가 아닙니다.</h2>
+        <p class="quote">목표를 말하고, 결과를 확인하고, 다시 수정하며 작동하는 결과물까지 가는 반복 제작 방식입니다.</p>
+        <div class="steps">
+          <div class="step"><div class="step-num">01</div><h3>의도</h3><p>무엇을 만들지 말한다.</p></div>
+          <div class="step"><div class="step-num">02</div><h3>실행</h3><p>AI가 결과를 만든다.</p></div>
+          <div class="step"><div class="step-num">03</div><h3>확인</h3><p>사람이 기준으로 검토한다.</p></div>
+          <div class="step"><div class="step-num">04</div><h3>수정</h3><p>부족한 점을 다시 요청한다.</p></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">05 / 22</div>
+      <div class="inner">
+        <div class="label">MATH TEACHER WORKFLOW</div>
+        <h2>수학강사의 업무는 이미<br>AI와 잘 맞는 구조입니다.</h2>
+        <div class="keyword-grid">
+          <div class="keyword"><strong>문제 제작</strong><em>유형, 난이도, 조건 변형</em></div>
+          <div class="keyword"><strong>풀이 해설</strong><em>핵심 아이디어와 단계 정리</em></div>
+          <div class="keyword"><strong>오답 분석</strong><em>오류 유형과 보충 방향</em></div>
+          <div class="keyword"><strong>학생 관리</strong><em>과제, 리포트, 상담 흐름</em></div>
+          <div class="keyword"><strong>수업자료</strong><em>개념 카드, 프린트, 안내문</em></div>
+          <div class="keyword"><strong>커뮤니케이션</strong><em>학생·학부모 전달 문구</em></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">06 / 22</div>
+      <div class="inner">
+        <div class="label">LEVELS</div>
+        <h2>AI 활용은 질문형에서<br>제품형으로 확장됩니다.</h2>
+        <div class="steps">
+          <div class="step"><div class="step-num accent-blue">01</div><h3>물어보기</h3><p>질문하고 답을 받는 단계</p></div>
+          <div class="step"><div class="step-num accent-mint">02</div><h3>자료 만들기</h3><p>문항, 해설, 안내문 초안 제작</p></div>
+          <div class="step"><div class="step-num accent-yellow">03</div><h3>자동화</h3><p>반복 흐름을 템플릿화</p></div>
+          <div class="step"><div class="step-num accent-purple">04</div><h3>도구 만들기</h3><p>내 업무에 맞는 앱과 웹 도구</p></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">07 / 22</div>
+      <div class="inner">
+        <div class="label">WEB LLM VS WORKSPACE</div>
+        <h2>대화창에서 작업공간으로 이동해야 할 때가 있습니다.</h2>
+        <div class="compare">
+          <div class="compare-card">
+            <span class="tag">WEB LLM</span>
+            <h3>묻고 답하기</h3>
+            <ul>
+              <li>아이디어 정리</li>
+              <li>문서 요약</li>
+              <li>수업자료 초안</li>
+              <li>빠른 질의응답</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <span class="tag">IDE / AGENT</span>
+            <h3>만들고 고치기</h3>
+            <ul>
+              <li>파일 생성과 수정</li>
+              <li>코드 실행</li>
+              <li>오류 확인</li>
+              <li>결과물 검증</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">08 / 22</div>
+      <div class="inner">
+        <div class="label">WHEN TO USE</div>
+        <h2>답변이 필요하면 웹 LLM,<br>결과물이 필요하면 작업환경.</h2>
+        <div class="compare">
+          <div class="compare-card">
+            <span class="tag">웹 LLM이 적합한 경우</span>
+            <h3>빠른 사고 보조</h3>
+            <ul>
+              <li>아이디어 발산</li>
+              <li>문장 다듬기</li>
+              <li>간단한 자료 초안</li>
+            </ul>
+          </div>
+          <div class="compare-card">
+            <span class="tag">작업환경이 필요한 경우</span>
+            <h3>반복 제작과 검증</h3>
+            <ul>
+              <li>여러 파일이 필요한 작업</li>
+              <li>실행과 수정이 반복되는 작업</li>
+              <li>나만의 도구 제작</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">09 / 22</div>
+      <div class="inner">
+        <div class="label">SETUP BEFORE TOOLS</div>
+        <h2>AI 코딩은 계정보다<br>작업공간 관리가 먼저입니다.</h2>
+        <div class="checklist">
+          <div class="check">작업 폴더를 분리한다</div>
+          <div class="check">샘플/가상 데이터로 시작한다</div>
+          <div class="check">개인정보를 넣지 않는다</div>
+          <div class="check">백업과 버전 관리를 고려한다</div>
+          <div class="check">작은 실험부터 시작한다</div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">10 / 22</div>
+      <div class="inner">
+        <div class="two-col top">
+          <div>
+            <div class="label">GOOGLE ANTIGRAVITY</div>
+            <h2>Gemini 기반 에이전트형 작업환경</h2>
+            <p class="subtitle">이번 발표에서는 비교와 소개 수준으로 다룹니다.</p>
+          </div>
+          <div class="formula">
+            <div class="formula-row"><strong>Agent</strong><span>작업을 계획하고 실행하는 흐름</span></div>
+            <div class="formula-row"><strong>Desktop / CLI</strong><span>로컬 작업공간과 연결되는 개발환경</span></div>
+            <div class="formula-row"><strong>Google</strong><span>Gemini와 Google 생태계 기반 확장성</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">11 / 22</div>
+      <div class="inner">
+        <div class="two-col top">
+          <div>
+            <div class="label">OPENAI CODEX</div>
+            <h2>이번 실전 설명은<br>Codex를 중심으로 진행합니다.</h2>
+            <p class="subtitle">사람은 목표와 기준을 제시하고, AI는 파일을 읽고 수정하며 결과를 확인합니다.</p>
+          </div>
+          <div class="formula">
+            <div class="formula-row"><strong>Read</strong><span>작업 폴더와 파일 구조 이해</span></div>
+            <div class="formula-row"><strong>Edit</strong><span>코드와 문서를 직접 수정</span></div>
+            <div class="formula-row"><strong>Run</strong><span>명령 실행과 오류 확인</span></div>
+            <div class="formula-row"><strong>Review</strong><span>결과를 검토하고 다시 요청</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">12 / 22</div>
+      <div class="inner">
+        <div class="label">START SMALL</div>
+        <h2>첫 프로젝트는<br>작아야 합니다.</h2>
+        <p class="quote">1시간 안에 확인 가능하고, 실패해도 위험하지 않으며, 내 업무와 바로 연결되는 작업부터 시작합니다.</p>
+        <div class="keyword-grid">
+          <div class="keyword"><strong>문제지 생성기</strong><em>조건에 맞춘 문항 초안</em></div>
+          <div class="keyword"><strong>풀이 검토기</strong><em>해설 흐름과 오류 확인</em></div>
+          <div class="keyword"><strong>상담 문구 초안</strong><em>학생 상황별 전달 문구</em></div>
+          <div class="keyword"><strong>수업자료 변환</strong><em>블로그, 카드뉴스, 프린트</em></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">13 / 22</div>
+      <div class="inner">
+        <div class="loop-wrap">
+          <div class="loop">
+            <div class="loop-title">Codex<br>작업 루프</div>
+            <div class="node n1">요구사항</div>
+            <div class="node n2">요청</div>
+            <div class="node n3">실행</div>
+            <div class="node n4">확인</div>
+            <div class="node n5">수정</div>
+          </div>
+          <div>
+            <div class="label">LIVE DEMO</div>
+            <h2>데모 주제는 발표 중 함께 선정합니다.</h2>
+            <p class="subtitle">작은 주제를 정하고, Codex에 요청하고, 결과를 확인한 뒤 다시 수정하는 과정을 보여드립니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">14 / 22</div>
+      <div class="inner">
+        <div class="label">PROMPT ENGINEERING</div>
+        <h2>좋은 질문은 여전히 중요하지만,<br>질문만으로는 한계가 있습니다.</h2>
+        <div class="steps">
+          <div class="step"><div class="step-num">ROLE</div><h3>역할</h3><p>AI가 어떤 관점에서 답할지</p></div>
+          <div class="step"><div class="step-num">GOAL</div><h3>목표</h3><p>무엇을 만들거나 해결할지</p></div>
+          <div class="step"><div class="step-num">RULE</div><h3>조건</h3><p>지켜야 할 기준과 제한</p></div>
+          <div class="step"><div class="step-num">FORMAT</div><h3>출력</h3><p>받고 싶은 결과 형식</p></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">15 / 22</div>
+      <div class="inner">
+        <div class="label">CONTEXT ENGINEERING</div>
+        <h2>AI 성능은 질문보다<br>제공한 맥락과 기준에 좌우됩니다.</h2>
+        <div class="keyword-grid">
+          <div class="keyword"><strong>대상 학생</strong><em>학년, 수준, 성향</em></div>
+          <div class="keyword"><strong>수업 진도</strong><em>단원, 선행/복습 여부</em></div>
+          <div class="keyword"><strong>교재 스타일</strong><em>문항 유형과 표현 방식</em></div>
+          <div class="keyword"><strong>난이도 기준</strong><em>쉬움, 중, 어려움의 내부 기준</em></div>
+          <div class="keyword"><strong>금지사항</strong><em>피해야 할 표현과 데이터</em></div>
+          <div class="keyword"><strong>출력 형식</strong><em>표, 해설, 카드뉴스, 코드</em></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">16 / 22</div>
+      <div class="inner">
+        <div class="loop-wrap">
+          <div class="loop">
+            <div class="loop-title">Harness<br>Engineering</div>
+            <div class="node n1">템플릿</div>
+            <div class="node n2">파일 구조</div>
+            <div class="node n3">테스트</div>
+            <div class="node n4">자동화</div>
+            <div class="node n5">검수</div>
+          </div>
+          <div>
+            <div class="label">REPEATABLE SYSTEM</div>
+            <h2>잘 쓰는 사람은 프롬프트가 아니라<br>반복 가능한 작업 장치를 만듭니다.</h2>
+            <p class="subtitle">문항 생성, 해설 검토, 블로그 글 작성, 카드뉴스 생성이 매번 같은 기준으로 돌아가게 만드는 것입니다.</p>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">17 / 22</div>
+      <div class="inner">
+        <div class="label">MATH CONTEXT TEMPLATE</div>
+        <h2>수학강사용 컨텍스트를<br>표준화하면 결과가 안정됩니다.</h2>
+        <div class="checklist">
+          <div class="check">학년 / 과목 / 단원</div>
+          <div class="check">학생 수준과 목표</div>
+          <div class="check">난이도와 자주 하는 실수</div>
+          <div class="check">출력 형식과 예시 답안</div>
+          <div class="check">금지사항과 검수 기준</div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">18 / 22</div>
+      <div class="inner">
+        <div class="label">REQUEST PATTERN</div>
+        <h2>목표, 자료, 제약, 검증 기준을 함께 주면 시행착오가 줄어듭니다.</h2>
+        <div class="formula">
+          <div class="formula-row"><strong>목표</strong><span>무엇을 만들거나 해결할지</span></div>
+          <div class="formula-row"><strong>자료</strong><span>어떤 문항, 교재, 데이터, 예시를 참고할지</span></div>
+          <div class="formula-row"><strong>제약</strong><span>무엇을 피하고 어떤 기준을 지킬지</span></div>
+          <div class="formula-row"><strong>형식</strong><span>표, 글, 코드, HTML 등 어떤 형태로 받을지</span></div>
+          <div class="formula-row"><strong>검증</strong><span>결과가 맞는지 무엇으로 확인할지</span></div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">19 / 22</div>
+      <div class="inner">
+        <div class="showcase">
+          <div>
+            <div class="label">PROJECT SHOWCASE 01</div>
+            <h2>손풀이 제작 AI</h2>
+            <p class="subtitle">수학 강사의 해설 제작 노하우를 AI 작업 흐름으로 바꿉니다.</p>
+            <div class="mini-bars">
+              <div class="mini-bar"><strong>문제 입력</strong><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div></div>
+              <div class="mini-bar"><strong>풀이 구조</strong><div class="bar-track"><div class="bar-fill" style="width:86%"></div></div></div>
+              <div class="mini-bar"><strong>해설 검토</strong><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div></div>
+            </div>
+          </div>
+          <div class="shot-grid">
+            <div class="shot light crop-hand" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 1 크게 보기">
+              <img src="assets/showcase-hand-solution-01.png" alt="손풀이 제작 AI 예시 1" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부1<br>showcase-hand-solution-01.png</div>
+            </div>
+            <div class="shot light crop-hand" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 2 크게 보기">
+              <img src="assets/showcase-hand-solution-02.png" alt="손풀이 제작 AI 예시 2" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부2<br>showcase-hand-solution-02.png</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">20 / 22</div>
+      <div class="inner">
+        <div class="showcase-wide">
+          <div>
+            <div class="label">PROJECT SHOWCASE 02</div>
+            <h2>학생 관리앱 개발</h2>
+            <p class="subtitle">Signature-v2는 강사의 운영 방식을 직접 쓰는 업무 도구로 바꾸는 예시입니다.</p>
+            <p class="small" style="margin-top: 28px;">관리자 대시보드 · 개인 문항DB · 학생 대시보드 · 테스트 리포트</p>
+          </div>
+          <div class="shot-grid">
+            <div class="shot crop-admin" role="button" tabindex="0" aria-label="관리자 대시보드 크게 보기">
+              <img src="assets/showcase-signature-admin-dashboard.png" alt="관리자 대시보드" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부3<br>관리자 대시보드</div>
+            </div>
+            <div class="shot crop-db" role="button" tabindex="0" aria-label="개인 문항DB 크게 보기">
+              <img src="assets/showcase-signature-question-db.png" alt="개인 문항DB" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부4<br>개인 문항DB</div>
+            </div>
+            <div class="shot crop-student" role="button" tabindex="0" aria-label="학생 대시보드 크게 보기">
+              <img src="assets/showcase-signature-student-dashboard.png" alt="학생 대시보드" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부5<br>학생 대시보드</div>
+            </div>
+            <div class="shot crop-report" role="button" tabindex="0" aria-label="학생 테스트 리포트 크게 보기">
+              <img src="assets/showcase-signature-test-report.png" alt="학생 테스트 리포트" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부6<br>학생 테스트 리포트</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">21 / 22</div>
+      <div class="inner">
+        <div class="showcase">
+          <div>
+            <div class="label">PROJECT SHOWCASE 03</div>
+            <h2>블로그 자동화</h2>
+            <p class="subtitle">수업 철학과 생각을 컨텍스트로 쌓으면 콘텐츠 제작도 자동화할 수 있습니다.</p>
+            <div class="checklist" style="margin-top: 34px;">
+              <div class="check">수업 정보와 생각 저장</div>
+              <div class="check">AI가 지침으로 이해</div>
+              <div class="check">주제 선정 → 글 작성 → 카드뉴스 생성</div>
+            </div>
+          </div>
+          <div class="shot-grid blog-stack">
+            <div class="shot light crop-blog" role="button" tabindex="0" aria-label="블로그 자동화 카드뉴스 결과 예시 크게 보기">
+              <img src="assets/showcase-blog-automation.png" alt="블로그 자동화 카드뉴스 결과 예시" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">첨부7<br>showcase-blog-automation.png</div>
+            </div>
+            <div class="shot light crop-blog-text" role="button" tabindex="0" aria-label="블로그 자동화 글 본문 예시 크게 보기">
+              <img src="assets/showcase-blog-automation-text.png" alt="블로그 자동화 글 본문 예시" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">블로그 글 본문<br>showcase-blog-automation-text.png</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+
+    <section class="slide">
+      <div class="slide-no">22 / 22</div>
+      <div class="inner">
+        <div class="label">NEXT STEP</div>
+        <h2>오늘부터 작은 문제 하나를 정하고,<br>반복 루프를 경험해봅시다.</h2>
+        <div class="keyword-grid">
+          <div class="keyword"><strong>작은 업무 하나</strong><em>문제, 피드백, 안내문, 도구 중 하나</em></div>
+          <div class="keyword"><strong>가상 데이터</strong><em>민감정보 없이 안전하게 실험</em></div>
+          <div class="keyword"><strong>목표와 기준</strong><em>AI가 일할 수 있게 명확히 제공</em></div>
+          <div class="keyword"><strong>후속 스터디</strong><em>실제 개발 과정을 함께 공유</em></div>
+        </div>
+        <p class="meta">아이디어를 함께 모으고, 각자의 수업과 운영 방식에 맞는 도구를 실험합니다.</p>
+      </div>
+      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
+    </section>
+  </main>
+  <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="이미지 크게 보기">
+    <div class="lightbox-title" id="lightboxTitle"></div>
+    <button type="button" class="lightbox-close" id="lightboxClose" aria-label="닫기">×</button>
+    <img id="lightboxImage" src="" alt="">
+  </div>
+  <script>
+    (() => {
+      const slides = Array.from(document.querySelectorAll(".slide"));
+      const status = document.getElementById("slideStatus");
+      const prevButton = document.getElementById("prevSlide");
+      const nextButton = document.getElementById("nextSlide");
+      const overviewButton = document.getElementById("toggleOverview");
+      const fullscreenButton = document.getElementById("toggleFullscreen");
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImage = document.getElementById("lightboxImage");
+      const lightboxTitle = document.getElementById("lightboxTitle");
+      const lightboxClose = document.getElementById("lightboxClose");
+      let current = 0;
+
+      const clamp = (value) => Math.max(0, Math.min(slides.length - 1, value));
+
+      function setScale() {
+        const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
+        document.documentElement.style.setProperty("--slide-scale", String(scale));
+      }
+
+      function showSlide(index, pushHash = true) {
+        current = clamp(index);
+        slides.forEach((slide, idx) => slide.classList.toggle("active", idx === current));
+        status.textContent = `${current + 1} / ${slides.length}`;
+        if (document.body.classList.contains("presenting")) {
+          window.scrollTo(0, 0);
+        } else {
+          slides[current].scrollIntoView({ behavior: "smooth", block: "center" });
+        }
+        if (pushHash) {
+          history.replaceState(null, "", `#slide-${current + 1}`);
+        }
+      }
+
+      function next() {
+        showSlide(current + 1);
+      }
+
+      function prev() {
+        showSlide(current - 1);
+      }
+
+      function toggleOverview() {
+        document.body.classList.toggle("presenting");
+        overviewButton.textContent = document.body.classList.contains("presenting") ? "목록" : "발표";
+        setScale();
+        showSlide(current, false);
+      }
+
+      async function toggleFullscreen() {
+        if (!document.fullscreenElement) {
+          await document.documentElement.requestFullscreen?.();
+        } else {
+          await document.exitFullscreen?.();
+        }
+      }
+
+      function openLightbox(img) {
+        if (!img || !img.currentSrc) return;
+        lightboxImage.src = img.currentSrc;
+        lightboxImage.alt = img.alt || "확대 이미지";
+        lightboxTitle.textContent = img.alt || "";
+        lightbox.classList.add("open");
+      }
+
+      function closeLightbox() {
+        lightbox.classList.remove("open");
+        lightboxImage.src = "";
+      }
+
+      function slideIndexFromHash() {
+        const hashMatch = location.hash.match(/slide-(\d+)/);
+        return hashMatch ? Number(hashMatch[1]) - 1 : 0;
+      }
+
+      document.querySelectorAll(".shot").forEach((shot) => {
+        shot.addEventListener("click", () => openLightbox(shot.querySelector("img")));
+        shot.addEventListener("keydown", (event) => {
+          if (event.key === "Enter" || event.key === " ") {
+            event.preventDefault();
+            openLightbox(shot.querySelector("img"));
+          }
+        });
+      });
+
+      prevButton.addEventListener("click", prev);
+      nextButton.addEventListener("click", next);
+      overviewButton.addEventListener("click", toggleOverview);
+      fullscreenButton.addEventListener("click", toggleFullscreen);
+      lightboxClose.addEventListener("click", closeLightbox);
+      lightbox.addEventListener("click", (event) => {
+        if (event.target === lightbox) closeLightbox();
+      });
+
+      document.addEventListener("fullscreenchange", () => {
+        fullscreenButton.textContent = document.fullscreenElement ? "창모드" : "전체화면";
+        setScale();
+      });
+
+      window.addEventListener("resize", setScale);
+      window.addEventListener("hashchange", () => showSlide(slideIndexFromHash(), false));
+      document.addEventListener("keydown", (event) => {
+        if (lightbox.classList.contains("open")) {
+          if (event.key === "Escape") closeLightbox();
+          return;
+        }
+        if (event.key === "ArrowRight" || event.key === "PageDown" || event.key === " ") {
+          event.preventDefault();
+          next();
+        }
+        if (event.key === "ArrowLeft" || event.key === "PageUp" || event.key === "Backspace") {
+          event.preventDefault();
+          prev();
+        }
+        if (event.key === "Home") showSlide(0);
+        if (event.key === "End") showSlide(slides.length - 1);
+        if (event.key.toLowerCase() === "f") toggleFullscreen();
+        if (event.key.toLowerCase() === "o") toggleOverview();
+      });
+
+      setScale();
+      showSlide(slideIndexFromHash(), false);
+    })();
+  </script>
+</body>
+</html>
+
