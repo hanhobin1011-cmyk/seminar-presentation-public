@@ -105,6 +105,10 @@
       box-shadow: 0 14px 42px rgba(0, 0, 0, 0.35);
     }
 
+    body.previewing .deck-controls {
+      display: none;
+    }
+
     .deck-controls button {
       min-width: 48px;
       height: 48px;
@@ -911,8 +915,8 @@
           <div class="agenda">
             <div class="agenda-item"><span>01</span>AI 바이브 코딩 이해</div>
             <div class="agenda-item"><span>02</span>웹 LLM vs 작업환경</div>
-            <div class="agenda-item"><span>04</span>프롬프트에서 하네스로</div>
-            <div class="agenda-item"><span>05</span>프로젝트 쇼케이스</div>
+            <div class="agenda-item"><span>03</span>프롬프트에서 하네스로</div>
+            <div class="agenda-item"><span>04</span>프로젝트 쇼케이스</div>
           </div>
         </div>
       </div>
@@ -1278,6 +1282,10 @@
   </div>
   <script>
     (() => {
+      if (new URLSearchParams(location.search).get("preview") === "1") {
+        document.body.classList.add("previewing");
+      }
+
       const slides = Array.from(document.querySelectorAll(".slide"));
       const status = document.getElementById("slideStatus");
       const prevButton = document.getElementById("prevSlide");
