@@ -5,13 +5,13 @@
 ## 웹 주소
 
 - 발표자료 목록: https://hanhobin1011-cmyk.github.io/seminar-presentation-public/
-- 수학강사를 위한 AI 바이브 코딩 시작 가이드: https://hanhobin1011-cmyk.github.io/seminar-presentation-public/decks/ai-vibe-coding-math-teachers/
+- 초강스 바이브코딩 초급 과정: https://hanhobin1011-cmyk.github.io/seminar-presentation-public/decks/ai-vibe-coding-math-teachers/
 
 ## 포함 자료
 
 | 발표자료 | 경로 | 설명 |
 | --- | --- | --- |
-| 수학강사를 위한 AI 바이브 코딩 시작 가이드 | `decks/ai-vibe-coding-math-teachers/` | 22장 HTML 발표자료 |
+| 초강스 바이브코딩 초급 과정 | `decks/ai-vibe-coding-math-teachers/` | 19장 HTML 발표자료 |
 
 ## 운영 원칙
 
