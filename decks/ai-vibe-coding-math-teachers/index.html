@@ -232,6 +232,77 @@
     .progress span:nth-child(8) { background: var(--purple); }
     .progress span:nth-child(9) { background: #d989ff; }
 
+    .cover-slide {
+      background:
+        radial-gradient(circle at 73% 40%, rgba(100, 168, 255, 0.18), transparent 30%),
+        radial-gradient(circle at 87% 72%, rgba(178, 140, 255, 0.17), transparent 34%),
+        linear-gradient(90deg, #030405 0 54%, #07101a 76%, #030405 100%);
+    }
+
+    .cover-slide .inner {
+      z-index: 4;
+    }
+
+    .cover-slide h1 {
+      max-width: 760px;
+    }
+
+    .cover-portraits {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      pointer-events: none;
+    }
+
+    .cover-portraits::before {
+      content: "";
+      position: absolute;
+      right: 38px;
+      bottom: 92px;
+      width: 940px;
+      height: 720px;
+      background:
+        radial-gradient(ellipse at 30% 40%, rgba(100, 168, 255, 0.28), transparent 56%),
+        radial-gradient(ellipse at 72% 48%, rgba(126, 240, 193, 0.19), transparent 52%),
+        radial-gradient(ellipse at 52% 72%, rgba(178, 140, 255, 0.20), transparent 58%);
+      filter: blur(24px);
+      opacity: 1;
+    }
+
+    .cover-portrait {
+      position: absolute;
+      bottom: 56px;
+      filter: drop-shadow(0 38px 46px rgba(0, 0, 0, 0.72));
+    }
+
+    .cover-portrait img {
+      display: block;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      filter: saturate(1.03) contrast(1.02) brightness(1.02);
+    }
+
+    .cover-portrait.hanhobin {
+      right: 505px;
+      width: 505px;
+      z-index: 3;
+    }
+
+    .cover-portrait.ryuyongsu {
+      right: 84px;
+      width: 545px;
+      z-index: 2;
+    }
+
+    .cover-portrait.hanhobin img {
+      transform: translateY(26px);
+    }
+
+    .cover-portrait.ryuyongsu img {
+      transform: translateY(16px);
+    }
+
     .slide-no {
       position: absolute;
       right: 112px;
@@ -810,7 +881,15 @@
     <button type="button" class="wide-control" id="toggleFullscreen">전체화면</button>
   </nav>
   <main class="deck">
-    <section class="slide">
+    <section class="slide cover-slide">
+      <div class="cover-portraits" aria-hidden="true">
+        <div class="cover-portrait hanhobin">
+          <img src="assets/speaker-hanhobin-cover-cutout.png" alt="">
+        </div>
+        <div class="cover-portrait ryuyongsu">
+          <img src="assets/speaker-ryuyongsu-cover-cutout.png" alt="">
+        </div>
+      </div>
       <div class="inner">
         <div class="label">AI CODING SEMINAR</div>
         <h1>초강스<br>바이브코딩<br>초급 과정</h1>
@@ -1324,4 +1403,3 @@
   </script>
 </body>
 </html>
-
