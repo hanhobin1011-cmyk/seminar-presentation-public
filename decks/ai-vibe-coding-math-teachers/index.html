@@ -408,6 +408,38 @@
 
     .card h3 { margin-bottom: 20px; }
 
+    .doc-link {
+      display: block;
+      margin-top: 18px;
+      padding: 20px 22px;
+      border: 1px solid #354052;
+      border-radius: 8px;
+      background: #0c1018;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 24px;
+      font-weight: 850;
+      line-height: 1.18;
+      transition: border-color 160ms ease, color 160ms ease, background 160ms ease;
+    }
+
+    .doc-link span {
+      display: block;
+      margin-top: 8px;
+      color: var(--muted);
+      font-size: 17px;
+      line-height: 1.35;
+      font-weight: 650;
+    }
+
+    .doc-link:hover,
+    .doc-link:focus-visible {
+      border-color: rgba(100, 168, 255, 0.82);
+      background: #101827;
+      color: var(--blue);
+      outline: none;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -1094,32 +1126,33 @@
 
     <section class="slide">
       <div class="inner">
-        <div class="label">BLOG AUTOMATION CONTEXT</div>
-        <h2>컨텍스트는 실제로<br>MD 파일로 관리할 수 있습니다.</h2>
+        <div class="label">PROJECT FILE EXAMPLES</div>
+        <h2>실제 프로젝트의 MD 파일을<br>AI가 계속 참고하게 만듭니다.</h2>
         <div class="two-col top">
-          <div class="code compact"># my-class-context.md
-
-## 내 수업의 방향
-- 시험 직전 새 문제보다 복습과 점검을 중시
-- 학생이 이미 배운 개념을 다시 꺼낼 수 있게 설명
-- 불안감을 키우는 표현보다 실천 가능한 행동을 제안
-
-## 주요 독자
-- 고등학교 수학을 준비하는 학생과 학부모
-- 시험 직전 학습 방향이 필요한 학생</div>
-          <div class="code compact"># blog-output-format.md
-
-## 출력 형식
-1. 블로그 제목 3개
-2. 본문 구조
-   - 문제 상황
-   - 강사의 관점
-   - 실천 방법
-   - 마무리 메시지
-3. 카드뉴스 문구 6장
-4. 인스타 업로드용 요약 문구</div>
+          <div class="card soft">
+            <span class="pill">컨텍스트 엔지니어링</span>
+            <h3 style="margin-top: 22px;">손풀이 AI의 그래프 작성 규칙</h3>
+            <p class="small">그래프를 좌표 기반 그래프와 개형 스케치로 구분하고, 수학적 판단에 필요한 보조그림 기준을 문서로 고정합니다.</p>
+            <a class="doc-link" href="docs/hand-solution-ai/graph_drawing_rules.md" target="_blank" rel="noopener">
+              graph_drawing_rules.md
+              <span>AI가 그래프를 어떤 기준으로 그릴지 계속 참고하는 규칙 파일</span>
+            </a>
+          </div>
+          <div class="card soft">
+            <span class="pill">하네스 엔지니어링</span>
+            <h3 style="margin-top: 22px;">작업 절차와 체크리스트</h3>
+            <p class="small">한 번의 지시가 아니라, 프로젝트 시작 절차와 검토 기준을 묶어 반복 가능한 작업 구조로 만듭니다.</p>
+            <a class="doc-link" href="docs/hand-solution-ai/README.md" target="_blank" rel="noopener">
+              README.md
+              <span>프로젝트 목적, 실행 순서, 검증 명령을 정리한 시작 문서</span>
+            </a>
+            <a class="doc-link" href="docs/hand-solution-ai/Agent.md" target="_blank" rel="noopener">
+              Agent.md
+              <span>AI 에이전트가 세션마다 읽고 따라야 하는 작업 지휘서</span>
+            </a>
+          </div>
         </div>
-        <p class="meta">AI가 내 생각과 출력 형식을 계속 참고하게 만들면, 콘텐츠 제작도 반복 가능한 흐름이 됩니다.</p>
+        <p class="meta">컨텍스트는 “무엇을 참고할지”를 정하고, 하네스는 “어떤 순서와 기준으로 반복할지”를 정합니다.</p>
       </div>
     </section>
 
