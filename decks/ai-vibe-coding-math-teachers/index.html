@@ -7,7 +7,6 @@
   <style>
     :root {
       --bg: #050505;
-      --bg-2: #101114;
       --panel: #181a1f;
       --panel-2: #20232a;
       --text: #ffffff;
@@ -21,11 +20,10 @@
       --purple: #b28cff;
       --cyan: #83e6f2;
       --peach: #ffb296;
+      --red: #ff6d73;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     html,
     body {
@@ -42,18 +40,18 @@
       overflow-x: auto;
     }
 
-    .deck {
-      display: grid;
-      gap: 32px;
-      justify-items: center;
-    }
-
     body.presenting {
       width: 100vw;
       height: 100vh;
       padding: 0;
       overflow: hidden;
       background: #000;
+    }
+
+    .deck {
+      display: grid;
+      gap: 32px;
+      justify-items: center;
     }
 
     body.presenting .deck {
@@ -74,9 +72,7 @@
       transform-origin: center;
     }
 
-    body.presenting .slide.active {
-      display: block;
-    }
+    body.presenting .slide.active { display: block; }
 
     .slide {
       position: relative;
@@ -87,6 +83,15 @@
       border: 1px solid #121318;
       border-radius: 8px;
       box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+    }
+
+    .inner {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      padding: 92px 112px 78px;
     }
 
     .deck-controls {
@@ -105,9 +110,7 @@
       box-shadow: 0 14px 42px rgba(0, 0, 0, 0.35);
     }
 
-    body.previewing .deck-controls {
-      display: none;
-    }
+    body.previewing .deck-controls { display: none; }
 
     .deck-controls button {
       min-width: 48px;
@@ -135,20 +138,22 @@
     }
 
     .slide-status {
-      min-width: 78px;
+      min-width: 82px;
       color: var(--muted);
       text-align: center;
       font-size: 17px;
       font-weight: 850;
     }
 
-    .inner {
+    .slide-no {
       position: absolute;
-      inset: 0;
-      padding: 92px 112px 78px;
-      display: flex;
-      flex-direction: column;
-      z-index: 1;
+      right: 112px;
+      top: 76px;
+      z-index: 3;
+      color: #5f6672;
+      font-size: 19px;
+      font-weight: 800;
+      letter-spacing: 0.08em;
     }
 
     .label {
@@ -163,12 +168,10 @@
     h1,
     h2,
     h3,
-    p {
-      margin: 0;
-    }
+    p { margin: 0; }
 
     h1 {
-      max-width: 1160px;
+      max-width: 760px;
       font-size: 98px;
       line-height: 1.04;
       font-weight: 900;
@@ -176,15 +179,15 @@
     }
 
     h2 {
-      max-width: 1080px;
-      font-size: 68px;
+      max-width: 1150px;
+      font-size: 66px;
       line-height: 1.12;
       font-weight: 900;
       letter-spacing: 0;
     }
 
     h3 {
-      font-size: 38px;
+      font-size: 36px;
       line-height: 1.22;
       font-weight: 850;
       letter-spacing: 0;
@@ -202,6 +205,7 @@
       color: var(--muted);
       font-size: 21px;
       line-height: 1.5;
+      font-weight: 600;
     }
 
     .meta {
@@ -212,18 +216,27 @@
       font-weight: 650;
     }
 
+    .quote {
+      max-width: 1120px;
+      margin-top: 54px;
+      color: var(--muted);
+      font-size: 34px;
+      line-height: 1.38;
+      font-weight: 750;
+    }
+
     .progress {
       position: absolute;
       left: 112px;
       right: 112px;
       bottom: 38px;
-      height: 18px;
+      z-index: 4;
       display: grid;
       grid-template-columns: 1.2fr 0.9fr 0.8fr 1.1fr 0.85fr 0.85fr 0.9fr 0.9fr 0.8fr;
+      height: 18px;
       overflow: hidden;
       border-radius: 999px;
       opacity: 0.98;
-      z-index: 3;
     }
 
     .progress span:nth-child(1) { background: #c5cbd1; }
@@ -236,20 +249,22 @@
     .progress span:nth-child(8) { background: var(--purple); }
     .progress span:nth-child(9) { background: #d989ff; }
 
+    .accent-blue { color: var(--blue); }
+    .accent-mint { color: var(--mint); }
+    .accent-pink { color: var(--pink); }
+    .accent-yellow { color: var(--yellow); }
+    .accent-purple { color: var(--purple); }
+    .accent-cyan { color: var(--cyan); }
+    .accent-red { color: var(--red); }
+
     .cover-slide {
       background:
-        radial-gradient(circle at 73% 40%, rgba(100, 168, 255, 0.18), transparent 30%),
-        radial-gradient(circle at 87% 72%, rgba(178, 140, 255, 0.17), transparent 34%),
-        linear-gradient(90deg, #030405 0 54%, #07101a 76%, #030405 100%);
+        radial-gradient(ellipse at 73% 45%, rgba(100, 168, 255, 0.18), transparent 35%),
+        radial-gradient(ellipse at 86% 76%, rgba(126, 240, 193, 0.10), transparent 34%),
+        linear-gradient(90deg, #030405 0 53%, #07101a 78%, #030405 100%);
     }
 
-    .cover-slide .inner {
-      z-index: 4;
-    }
-
-    .cover-slide h1 {
-      max-width: 760px;
-    }
+    .cover-slide .inner { z-index: 5; }
 
     .cover-portraits {
       position: absolute;
@@ -266,8 +281,8 @@
       width: 940px;
       height: 720px;
       background:
-        radial-gradient(ellipse at 30% 40%, rgba(100, 168, 255, 0.28), transparent 56%),
-        radial-gradient(ellipse at 72% 48%, rgba(126, 240, 193, 0.19), transparent 52%),
+        radial-gradient(ellipse at 30% 40%, rgba(100, 168, 255, 0.30), transparent 56%),
+        radial-gradient(ellipse at 72% 48%, rgba(126, 240, 193, 0.22), transparent 52%),
         radial-gradient(ellipse at 52% 72%, rgba(178, 140, 255, 0.20), transparent 58%);
       filter: blur(24px);
       opacity: 1;
@@ -284,7 +299,7 @@
       width: 100%;
       height: auto;
       object-fit: contain;
-      filter: saturate(1.03) contrast(1.02) brightness(1.02);
+      filter: saturate(1.03) contrast(1.02) brightness(1.04);
     }
 
     .cover-portrait.hanhobin {
@@ -299,35 +314,24 @@
       z-index: 2;
     }
 
-    .cover-portrait.hanhobin img {
-      transform: translateY(26px);
-    }
-
-    .cover-portrait.ryuyongsu img {
-      transform: translateY(16px);
-    }
-
-    .slide-no {
-      position: absolute;
-      right: 112px;
-      top: 76px;
-      color: #5f6672;
-      font-size: 19px;
-      font-weight: 800;
-      letter-spacing: 0.08em;
-      z-index: 2;
-    }
+    .cover-portrait.hanhobin img { transform: translateY(26px); }
+    .cover-portrait.ryuyongsu img { transform: translateY(16px); }
 
     .two-col {
       display: grid;
-      grid-template-columns: 0.9fr 1.1fr;
-      gap: 92px;
+      grid-template-columns: 0.92fr 1.08fr;
+      gap: 86px;
       align-items: center;
       height: 100%;
     }
 
-    .two-col.top {
-      align-items: start;
+    .two-col.top { align-items: start; }
+
+    .split {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 32px;
+      margin-top: 48px;
     }
 
     .agenda {
@@ -337,14 +341,16 @@
     }
 
     .agenda-item {
-      font-size: 40px;
-      line-height: 1.18;
+      display: grid;
+      grid-template-columns: 72px 1fr;
+      gap: 18px;
+      align-items: baseline;
+      font-size: 38px;
+      line-height: 1.2;
       font-weight: 850;
     }
 
     .agenda-item span {
-      display: inline-block;
-      width: 62px;
       color: var(--muted);
       font-weight: 800;
     }
@@ -354,8 +360,15 @@
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
       margin-top: 48px;
-      max-width: 980px;
+      max-width: 1030px;
     }
+
+    .keyword-grid.three {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      max-width: none;
+    }
+
+    .keyword-grid.wide { max-width: none; }
 
     .keyword {
       min-height: 118px;
@@ -367,6 +380,8 @@
       flex-direction: column;
       justify-content: center;
     }
+
+    .keyword.tall { min-height: 180px; }
 
     .keyword strong {
       font-size: 30px;
@@ -383,22 +398,17 @@
       font-weight: 600;
     }
 
-    .compare {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 28px;
-      margin-top: 50px;
-    }
-
-    .compare-card {
-      min-height: 420px;
+    .card {
       border: 1px solid var(--line);
       border-radius: 8px;
       background: var(--panel);
-      padding: 38px;
+      padding: 34px;
     }
 
-    .compare-card .tag,
+    .card.soft { background: linear-gradient(180deg, #1b1e25 0%, #111318 100%); }
+
+    .card h3 { margin-bottom: 20px; }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -411,11 +421,6 @@
       font-weight: 850;
     }
 
-    .compare-card h3 {
-      margin-top: 24px;
-      margin-bottom: 24px;
-    }
-
     ul {
       margin: 0;
       padding: 0;
@@ -424,14 +429,12 @@
 
     li {
       color: var(--muted);
-      font-size: 25px;
-      line-height: 1.45;
+      font-size: 24px;
+      line-height: 1.42;
       font-weight: 650;
     }
 
-    li + li {
-      margin-top: 14px;
-    }
+    li + li { margin-top: 14px; }
 
     .steps {
       display: grid;
@@ -440,13 +443,18 @@
       margin-top: 56px;
     }
 
+    .steps.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    .steps.five { grid-template-columns: repeat(5, minmax(0, 1fr)); }
+
     .step {
-      min-height: 288px;
+      min-height: 286px;
       border: 1px solid var(--line);
       border-radius: 8px;
       background: linear-gradient(180deg, #1b1e25 0%, #111318 100%);
       padding: 30px;
     }
+
+    .step.small-step { min-height: 230px; }
 
     .step-num {
       color: var(--weak);
@@ -456,46 +464,16 @@
     }
 
     .step h3 {
-      margin-top: 28px;
-      font-size: 32px;
+      margin-top: 26px;
+      font-size: 31px;
     }
 
     .step p {
-      margin-top: 18px;
+      margin-top: 16px;
       color: var(--muted);
       font-size: 20px;
       line-height: 1.45;
       font-weight: 600;
-    }
-
-    .checklist {
-      display: grid;
-      gap: 18px;
-      margin-top: 46px;
-      max-width: 980px;
-    }
-
-    .check {
-      display: grid;
-      grid-template-columns: 44px 1fr;
-      gap: 22px;
-      align-items: center;
-      min-height: 72px;
-      border-bottom: 1px solid var(--line);
-      color: var(--text);
-      font-size: 29px;
-      line-height: 1.25;
-      font-weight: 800;
-    }
-
-    .check::before {
-      content: "";
-      width: 18px;
-      height: 18px;
-      margin-left: 10px;
-      border-radius: 50%;
-      background: var(--mint);
-      box-shadow: 0 0 0 8px rgba(126, 240, 193, 0.12);
     }
 
     .loop-wrap {
@@ -528,9 +506,9 @@
     .loop-title {
       position: absolute;
       inset: 0;
+      z-index: 1;
       display: grid;
       place-items: center;
-      z-index: 1;
       color: var(--text);
       font-size: 34px;
       font-weight: 900;
@@ -542,8 +520,8 @@
       position: absolute;
       z-index: 2;
       width: 144px;
-      text-align: center;
       color: var(--muted);
+      text-align: center;
       font-size: 22px;
       font-weight: 800;
     }
@@ -554,8 +532,8 @@
       width: 58px;
       height: 58px;
       margin: 0 auto 12px;
-      border-radius: 50%;
       border: 2px solid var(--muted);
+      border-radius: 50%;
       background: var(--bg);
     }
 
@@ -565,48 +543,120 @@
     .node.n4 { left: 54px; bottom: 28px; }
     .node.n5 { left: -22px; top: 180px; }
 
-    .formula {
+    .table {
+      width: 100%;
+      margin-top: 48px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--panel);
+    }
+
+    .table th,
+    .table td {
+      padding: 22px 24px;
+      border-bottom: 1px solid var(--line);
+      border-right: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    .table th {
+      color: var(--text);
+      font-size: 22px;
+      font-weight: 900;
+      background: #20232a;
+    }
+
+    .table td {
+      color: var(--muted);
+      font-size: 21px;
+      line-height: 1.42;
+      font-weight: 650;
+    }
+
+    .table tr:last-child td { border-bottom: 0; }
+    .table th:last-child,
+    .table td:last-child { border-right: 0; }
+
+    .code {
+      margin-top: 42px;
+      padding: 28px 32px;
+      border: 1px solid #303744;
+      border-radius: 8px;
+      background: #090b10;
+      color: #dce7f7;
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      font-size: 24px;
+      line-height: 1.55;
+      white-space: pre-wrap;
+      overflow: hidden;
+    }
+
+    .code.small-code {
+      font-size: 21px;
+      line-height: 1.48;
+    }
+
+    .file-tree {
+      margin-top: 42px;
+      padding: 34px 38px;
+      border: 1px solid #303744;
+      border-radius: 8px;
+      background: #090b10;
+      color: #dce7f7;
+      font-family: "Cascadia Mono", Consolas, "Courier New", monospace;
+      font-size: 28px;
+      line-height: 1.55;
+      white-space: pre;
+    }
+
+    .checklist {
       display: grid;
       gap: 18px;
-      margin-top: 42px;
+      margin-top: 46px;
+      max-width: 980px;
     }
 
-    .formula-row {
+    .check {
       display: grid;
-      grid-template-columns: 220px 1fr;
-      gap: 24px;
+      grid-template-columns: 44px 1fr;
+      gap: 22px;
       align-items: center;
-      padding: 20px 0;
+      min-height: 72px;
       border-bottom: 1px solid var(--line);
-    }
-
-    .formula-row strong {
       color: var(--text);
-      font-size: 26px;
-      font-weight: 900;
+      font-size: 29px;
+      line-height: 1.25;
+      font-weight: 800;
     }
 
-    .formula-row span {
-      color: var(--muted);
-      font-size: 24px;
-      font-weight: 650;
-      line-height: 1.35;
+    .check::before {
+      content: "";
+      width: 18px;
+      height: 18px;
+      margin-left: 10px;
+      border-radius: 50%;
+      background: var(--mint);
+      box-shadow: 0 0 0 8px rgba(126, 240, 193, 0.12);
+    }
+
+    .showcase,
+    .showcase-wide {
+      display: grid;
+      height: 100%;
+      align-items: center;
     }
 
     .showcase {
-      display: grid;
       grid-template-columns: 0.46fr 0.54fr;
       gap: 44px;
-      height: 100%;
-      align-items: center;
     }
 
     .showcase-wide {
-      display: grid;
-      grid-template-columns: 0.34fr 0.66fr;
+      grid-template-columns: 0.36fr 0.64fr;
       gap: 38px;
-      height: 100%;
-      align-items: center;
     }
 
     .shot-grid {
@@ -615,48 +665,27 @@
       gap: 18px;
     }
 
-    .shot-grid.one {
-      grid-template-columns: 1fr;
-    }
+    .shot-grid.three { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 
-    .shot-grid.blog-stack {
-      grid-template-columns: 1fr;
-    }
+    .shot-grid.blog-stack { grid-template-columns: 1fr; }
 
     .shot {
       position: relative;
-      min-height: 280px;
+      display: grid;
+      place-items: center;
       height: 300px;
+      min-height: 280px;
+      overflow: hidden;
       border: 1px solid #333945;
       border-radius: 8px;
       background: #0d0e12;
-      overflow: hidden;
-      display: grid;
-      place-items: center;
       cursor: zoom-in;
     }
 
-    .shot.tall {
-      min-height: 610px;
-      height: 610px;
-    }
-
-    .showcase > .shot-grid .shot {
-      height: 610px;
-    }
-
-    .showcase > .shot-grid.blog-stack .shot {
-      min-height: 296px;
-      height: 296px;
-    }
-
-    .showcase-wide .shot-grid .shot {
-      height: 300px;
-    }
-
-    .shot.light {
-      background: #f5f5f2;
-    }
+    .showcase .shot { height: 610px; }
+    .showcase-wide .shot-grid .shot { height: 300px; }
+    .shot.compact { height: 370px; }
+    .shot.light { background: #f5f5f2; }
 
     .shot img {
       display: block;
@@ -667,9 +696,7 @@
       transition: transform 180ms ease;
     }
 
-    .shot:hover img {
-      transform: scale(1.025);
-    }
+    .shot:hover img { transform: scale(1.025); }
 
     .shot::after {
       content: "클릭 확대";
@@ -699,39 +726,13 @@
       outline-offset: 4px;
     }
 
-    .shot.crop-hand img {
-      object-fit: cover;
-      object-position: 54% 54%;
-    }
-
-    .shot.crop-admin img {
-      object-position: 52% 38%;
-    }
-
-    .shot.crop-db img {
-      object-position: 50% 18%;
-    }
-
-    .shot.crop-student img {
-      object-position: 50% 22%;
-    }
-
-    .shot.crop-report img {
-      object-position: 50% 14%;
-    }
-
-    .shot.crop-blog img {
-      object-position: 50% 12%;
-    }
-
-    .shot.crop-blog-text img {
-      object-position: 50% 0%;
-    }
-
-    .shot.contain img {
-      object-fit: cover;
-      background: #f6f6f2;
-    }
+    .shot.crop-hand img { object-position: 54% 54%; }
+    .shot.crop-admin img { object-position: 52% 38%; }
+    .shot.crop-db img { object-position: 50% 18%; }
+    .shot.crop-student img { object-position: 50% 22%; }
+    .shot.crop-report img { object-position: 50% 14%; }
+    .shot.crop-blog img { object-position: 50% 12%; }
+    .shot.crop-blog-text img { object-position: 50% 0%; }
 
     .fallback {
       position: absolute;
@@ -765,9 +766,7 @@
       background: rgba(0, 0, 0, 0.88);
     }
 
-    .lightbox.open {
-      display: flex;
-    }
+    .lightbox.open { display: flex; }
 
     .lightbox img {
       max-width: min(94vw, 1800px);
@@ -802,57 +801,8 @@
       cursor: pointer;
     }
 
-    .quote {
-      max-width: 1120px;
-      margin-top: 54px;
-      color: var(--muted);
-      font-size: 34px;
-      line-height: 1.38;
-      font-weight: 750;
-    }
-
-    .accent-blue { color: var(--blue); }
-    .accent-mint { color: var(--mint); }
-    .accent-pink { color: var(--pink); }
-    .accent-yellow { color: var(--yellow); }
-    .accent-purple { color: var(--purple); }
-
-    .mini-bars {
-      display: grid;
-      gap: 18px;
-      margin-top: 46px;
-      max-width: 760px;
-    }
-
-    .mini-bar {
-      display: grid;
-      grid-template-columns: 170px 1fr;
-      gap: 24px;
-      align-items: center;
-    }
-
-    .mini-bar strong {
-      font-size: 24px;
-      font-weight: 850;
-    }
-
-    .bar-track {
-      height: 16px;
-      border-radius: 999px;
-      background: #242833;
-      overflow: hidden;
-    }
-
-    .bar-fill {
-      height: 100%;
-      border-radius: inherit;
-      background: linear-gradient(90deg, var(--blue), var(--mint));
-    }
-
     @media (max-width: 900px) {
-      body:not(.presenting) {
-        padding: 12px;
-      }
+      body:not(.presenting) { padding: 12px; }
     }
 
     @media print {
@@ -861,17 +811,15 @@
         background: #000;
       }
 
-      .deck {
-        display: block;
-      }
+      .deck { display: block; }
 
       .slide {
         width: 100vw;
         height: 100vh;
-        page-break-after: always;
         border: 0;
         border-radius: 0;
         box-shadow: none;
+        page-break-after: always;
       }
     }
   </style>
@@ -879,11 +827,12 @@
 <body class="presenting">
   <nav class="deck-controls" aria-label="발표 컨트롤">
     <button type="button" id="prevSlide" aria-label="이전 슬라이드">‹</button>
-    <div class="slide-status" id="slideStatus">1 / 19</div>
+    <div class="slide-status" id="slideStatus">1 / 25</div>
     <button type="button" id="nextSlide" aria-label="다음 슬라이드">›</button>
     <button type="button" class="wide-control" id="toggleOverview">목록</button>
     <button type="button" class="wide-control" id="toggleFullscreen">전체화면</button>
   </nav>
+
   <main class="deck">
     <section class="slide cover-slide">
       <div class="cover-portraits" aria-hidden="true">
@@ -897,52 +846,47 @@
       <div class="inner">
         <div class="label">AI CODING SEMINAR</div>
         <h1>초강스<br>바이브코딩<br>초급 과정</h1>
-        <p class="subtitle">웹과 IDE 구조부터 실제 활용 노하우까지</p>
+        <p class="subtitle">Codex 작업환경부터 손풀이 AI 구조까지</p>
         <p class="meta">연사: 류용수T · 한호빈T</p>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">02 / 19</div>
       <div class="inner">
         <div class="two-col">
           <div>
             <div class="label">CONTENTS</div>
-            <h2>오늘 얻어갈 것</h2>
-            <p class="subtitle">도구 소개보다 중요한 것은<br>AI를 핸들링하는 구조를 익히는 것입니다.</p>
+            <h2>오늘의 흐름</h2>
+            <p class="subtitle">목표는 앱 완성이 아니라<br>AI가 일할 안전한 폴더와 요청 구조를 경험하는 것입니다.</p>
+            <p class="small" style="margin-top: 38px;">도착점: 작업 폴더 만들기 · 손풀이 AI 구조 이해 · 작은 업무 아이디어 정하기</p>
           </div>
           <div class="agenda">
-            <div class="agenda-item"><span>01</span>AI 바이브 코딩 이해</div>
-            <div class="agenda-item"><span>02</span>웹 LLM vs 작업환경</div>
-            <div class="agenda-item"><span>03</span>프롬프트에서 하네스로</div>
-            <div class="agenda-item"><span>04</span>프로젝트 쇼케이스</div>
+            <div class="agenda-item"><span>01</span>AI 바이브코딩으로 무엇을 할 수 있나</div>
+            <div class="agenda-item"><span>02</span>Codex 작업환경 시작하기</div>
+            <div class="agenda-item"><span>03</span>AI를 잘 핸들링하는 방식</div>
+            <div class="agenda-item"><span>04</span>수학강사 업무에 적용하기</div>
           </div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">03 / 19</div>
       <div class="inner">
         <div class="label">WHY NOW</div>
-        <h2>AI는 수업 준비와 운영의 진입장벽을 낮추고 있습니다.</h2>
-        <div class="keyword-grid">
-          <div class="keyword"><strong>수업 준비 시간</strong><em>문제 선별, 자료 초안, 설명 흐름 정리</em></div>
-          <div class="keyword"><strong>자료 품질</strong><em>해설, 예시, 구조화된 시각 자료</em></div>
-          <div class="keyword"><strong>학생별 피드백</strong><em>오답 유형, 보충 방향, 전달 문구</em></div>
-          <div class="keyword"><strong>반복 업무</strong><em>템플릿화하고 도구로 전환</em></div>
+        <h2>수학강사에게 필요한 AI는<br>답변봇이 아니라 <span class="accent-mint">작업 동료</span>입니다.</h2>
+        <div class="keyword-grid wide">
+          <div class="keyword"><strong>수업 준비</strong><em>문제 선별, 해설 초안, 판서 흐름 정리</em></div>
+          <div class="keyword"><strong>학생 피드백</strong><em>오답 유형, 보충 방향, 전달 문구</em></div>
+          <div class="keyword"><strong>운영 관리</strong><em>과제, 리포트, 출결, 상담 흐름</em></div>
+          <div class="keyword"><strong>콘텐츠 제작</strong><em>블로그 글, 카드뉴스, 안내문 자동화</em></div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">04 / 19</div>
       <div class="inner">
         <div class="label">DEFINE</div>
-        <h2>바이브 코딩은<br><span class="accent-pink">"그냥 만들어줘"</span>가 아닙니다.</h2>
+        <h2>바이브코딩은<br><span class="accent-pink">"그냥 만들어줘"</span>가 아닙니다.</h2>
         <p class="quote">목표를 말하고, 결과를 확인하고, 다시 수정하며 작동하는 결과물까지 가는 반복 제작 방식입니다.</p>
         <div class="steps">
           <div class="step"><div class="step-num">01</div><h3>의도</h3><p>무엇을 만들지 말한다.</p></div>
@@ -951,28 +895,9 @@
           <div class="step"><div class="step-num">04</div><h3>수정</h3><p>부족한 점을 다시 요청한다.</p></div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">05 / 19</div>
-      <div class="inner">
-        <div class="label">MATH TEACHER WORKFLOW</div>
-        <h2>수학강사의 업무는 이미<br>AI와 잘 맞는 구조입니다.</h2>
-        <div class="keyword-grid">
-          <div class="keyword"><strong>문제 제작</strong><em>유형, 난이도, 조건 변형</em></div>
-          <div class="keyword"><strong>풀이 해설</strong><em>핵심 아이디어와 단계 정리</em></div>
-          <div class="keyword"><strong>오답 분석</strong><em>오류 유형과 보충 방향</em></div>
-          <div class="keyword"><strong>학생 관리</strong><em>과제, 리포트, 상담 흐름</em></div>
-          <div class="keyword"><strong>수업자료</strong><em>개념 카드, 프린트, 안내문</em></div>
-          <div class="keyword"><strong>커뮤니케이션</strong><em>학생·학부모 전달 문구</em></div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">06 / 19</div>
       <div class="inner">
         <div class="label">LEVELS</div>
         <h2>AI 활용은 질문형에서<br>제품형으로 확장됩니다.</h2>
@@ -983,288 +908,383 @@
           <div class="step"><div class="step-num accent-purple">04</div><h3>도구 만들기</h3><p>내 업무에 맞는 앱과 웹 도구</p></div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">07 / 19</div>
+      <div class="inner">
+        <div class="label">PROJECT THINKING</div>
+        <h2>수학강사 업무를<br>AI 프로젝트로 바꾸는 법</h2>
+        <table class="table">
+          <thead>
+            <tr><th>업무</th><th>AI에게 줄 입력</th><th>기대 결과물</th><th>검증 기준</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>문항 해설</td><td>문제, 학생 수준, 풀이 스타일</td><td>손풀이 초안, 주의점, 검산</td><td>계산과 논리 오류</td></tr>
+            <tr><td>오답 분석</td><td>정답률, 오답 선택, 단원 정보</td><td>오답 유형, 보충 과제</td><td>학생 수준 적합성</td></tr>
+            <tr><td>학생 관리</td><td>가상 데이터, 관리 항목</td><td>대시보드, 리포트 화면</td><td>개인정보 제외</td></tr>
+            <tr><td>블로그 자동화</td><td>수업 철학, 메모, 사례</td><td>주제, 글, 카드뉴스 문구</td><td>문체와 메시지</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section class="slide">
       <div class="inner">
         <div class="label">WEB LLM VS WORKSPACE</div>
-        <h2>대화창에서 작업공간으로 이동해야 할 때가 있습니다.</h2>
-        <div class="compare">
-          <div class="compare-card">
-            <span class="tag">WEB LLM</span>
-            <h3>묻고 답하기</h3>
+        <h2>웹 LLM과 작업환경은<br>역할이 다릅니다.</h2>
+        <div class="split">
+          <div class="card soft">
+            <span class="pill">웹 LLM</span>
+            <h3>대화창 중심</h3>
             <ul>
-              <li>아이디어 정리</li>
-              <li>문서 요약</li>
-              <li>수업자료 초안</li>
-              <li>빠른 질의응답</li>
+              <li>질문하고 답변을 받는다.</li>
+              <li>결과물을 사람이 복사해서 옮긴다.</li>
+              <li>단발성 아이디어와 초안에 강하다.</li>
             </ul>
           </div>
-          <div class="compare-card">
-            <span class="tag">IDE / AGENT</span>
-            <h3>만들고 고치기</h3>
+          <div class="card soft">
+            <span class="pill">IDE / 에이전트 작업환경</span>
+            <h3>파일과 실행 중심</h3>
             <ul>
-              <li>파일 생성과 수정</li>
-              <li>코드 실행</li>
-              <li>오류 확인</li>
-              <li>결과물 검증</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">08 / 19</div>
-      <div class="inner">
-        <div class="label">WHEN TO USE</div>
-        <h2>답변이 필요하면 웹 LLM,<br>결과물이 필요하면 작업환경.</h2>
-        <div class="compare">
-          <div class="compare-card">
-            <span class="tag">웹 LLM이 적합한 경우</span>
-            <h3>빠른 사고 보조</h3>
-            <ul>
-              <li>아이디어 발산</li>
-              <li>문장 다듬기</li>
-              <li>간단한 자료 초안</li>
-            </ul>
-          </div>
-          <div class="compare-card">
-            <span class="tag">작업환경이 필요한 경우</span>
-            <h3>반복 제작과 검증</h3>
-            <ul>
-              <li>여러 파일이 필요한 작업</li>
-              <li>실행과 수정이 반복되는 작업</li>
-              <li>나만의 도구 제작</li>
+              <li>AI가 폴더 안의 파일을 읽고 수정한다.</li>
+              <li>실행, 오류 확인, 재수정 루프를 돌릴 수 있다.</li>
+              <li>반복 가능한 작업 구조에 강하다.</li>
             </ul>
           </div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">09 / 19</div>
       <div class="inner">
-        <div class="label">SETUP BEFORE TOOLS</div>
-        <h2>AI 코딩은 계정보다<br>작업공간 관리가 먼저입니다.</h2>
+        <div class="label">AI WORK ENVIRONMENT</div>
+        <h2>도구 이름보다 중요한 것은<br><span class="accent-blue">사용자의 핸들링</span>입니다.</h2>
+        <div class="keyword-grid three wide">
+          <div class="keyword tall"><strong>Claude</strong><em>Claude Code와 연결해 파일 기반 작업을 맡길 수 있습니다.</em></div>
+          <div class="keyword tall"><strong>Gemini</strong><em>Antigravity 같은 작업환경에서 프로젝트 단위로 다룹니다.</em></div>
+          <div class="keyword tall"><strong>GPT</strong><em>Codex를 통해 폴더, 파일, 실행 결과를 함께 다룹니다.</em></div>
+        </div>
+        <p class="meta">어떤 환경이든 핵심은 목표, 자료, 제약, 출력 형식, 검증 기준을 사람이 잘 제공하는 것입니다.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">BEFORE SETUP</div>
+        <h2>Codex 설치보다 먼저<br>작업 범위를 정해야 합니다.</h2>
         <div class="checklist">
-          <div class="check">작업 폴더를 분리한다</div>
-          <div class="check">샘플/가상 데이터로 시작한다</div>
-          <div class="check">개인정보를 넣지 않는다</div>
-          <div class="check">백업과 버전 관리를 고려한다</div>
-          <div class="check">작은 실험부터 시작한다</div>
+          <div class="check">새 작업 폴더를 만든다: 예시 `vibe-coding-practice`</div>
+          <div class="check">실제 학생 정보와 학부모 상담 기록은 넣지 않는다.</div>
+          <div class="check">유료 교재 원문 대신 자체 제작 가상 문제를 사용한다.</div>
+          <div class="check">오늘 만들 결과물은 `.md` 또는 `.html` 한 개로 제한한다.</div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">10 / 19</div>
       <div class="inner">
+        <div class="label">CODEX START</div>
+        <h2>Codex 설치와 로그인은<br>작업 폴더를 열기 위한 준비입니다.</h2>
+        <div class="steps five">
+          <div class="step small-step"><div class="step-num">01</div><h3>공식 문서</h3><p>수업 당일 최신 설치 경로 확인</p></div>
+          <div class="step small-step"><div class="step-num">02</div><h3>방식 선택</h3><p>앱, IDE 확장, CLI 중 하나</p></div>
+          <div class="step small-step"><div class="step-num">03</div><h3>로그인</h3><p>계정 연결과 권한 확인</p></div>
+          <div class="step small-step"><div class="step-num">04</div><h3>폴더 열기</h3><p>AI가 작업할 범위 지정</p></div>
+          <div class="step small-step"><div class="step-num">05</div><h3>첫 요청</h3><p>작은 파일 하나 생성</p></div>
+        </div>
+        <div class="code small-code">공식 문서: developers.openai.com/codex
+CLI 선택 시 예시: 작업 폴더에서 codex 실행</div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">FIRST PRACTICE</div>
+        <h2>첫 실습은 빈 폴더에서<br>파일 하나를 만드는 것으로 충분합니다.</h2>
         <div class="two-col top">
           <div>
-            <div class="label">AI CODING ENVIRONMENT</div>
-            <h2>웹과 IDE 구조를 구분하면<br>도구 선택이 쉬워집니다.</h2>
-            <p class="subtitle">Claude, Gemini, GPT 중 무엇을 쓰든 핵심은 사용자가 목표와 기준을 어떻게 핸들링하느냐입니다.</p>
+            <div class="file-tree">vibe-coding-practice/
+  sample-problem.md</div>
+            <p class="subtitle">처음 목표는 앱 완성이 아니라<br>파일 생성과 수정 루프 경험입니다.</p>
           </div>
-          <div class="formula">
-            <div class="formula-row"><strong>Claude</strong><span>웹 대화창에서 Claude Code 작업환경으로 확장</span></div>
-            <div class="formula-row"><strong>Gemini</strong><span>웹 대화창에서 Antigravity 작업환경으로 확장</span></div>
-            <div class="formula-row"><strong>GPT</strong><span>웹 대화창에서 Codex 작업환경으로 확장</span></div>
-            <div class="formula-row"><strong>핵심</strong><span>도구 이름보다 목표, 자료, 제약, 검증 기준을 주는 방식이 더 중요</span></div>
-          </div>
+          <div class="code small-code">이 폴더에 sample-problem.md 파일을 만들고,
+고2 수학 미분 단원용 가상 문제 1개와
+해설 초안 구조를 작성해줘.
+
+실제 학생 정보나 유료 교재 원문은 쓰지 말고,
+수학 강사가 검토할 수 있는 형식으로 정리해줘.</div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">11 / 19</div>
       <div class="inner">
-        <div class="label">PROMPT ENGINEERING</div>
-        <h2>좋은 질문은 여전히 중요하지만,<br>질문만으로는 한계가 있습니다.</h2>
-        <div class="steps">
-          <div class="step"><div class="step-num">ROLE</div><h3>역할</h3><p>AI가 어떤 관점에서 답할지</p></div>
-          <div class="step"><div class="step-num">GOAL</div><h3>목표</h3><p>무엇을 만들거나 해결할지</p></div>
-          <div class="step"><div class="step-num">RULE</div><h3>조건</h3><p>지켜야 할 기준과 제한</p></div>
-          <div class="step"><div class="step-num">FORMAT</div><h3>출력</h3><p>받고 싶은 결과 형식</p></div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">12 / 19</div>
-      <div class="inner">
-        <div class="label">CONTEXT ENGINEERING</div>
-        <h2>AI 성능은 질문보다<br>제공한 맥락과 기준에 좌우됩니다.</h2>
-        <div class="keyword-grid">
-          <div class="keyword"><strong>대상 학생</strong><em>학년, 수준, 성향</em></div>
-          <div class="keyword"><strong>수업 진도</strong><em>단원, 선행/복습 여부</em></div>
-          <div class="keyword"><strong>교재 스타일</strong><em>문항 유형과 표현 방식</em></div>
-          <div class="keyword"><strong>난이도 기준</strong><em>쉬움, 중, 어려움의 내부 기준</em></div>
-          <div class="keyword"><strong>금지사항</strong><em>피해야 할 표현과 데이터</em></div>
-          <div class="keyword"><strong>출력 형식</strong><em>표, 해설, 카드뉴스, 코드</em></div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">13 / 19</div>
-      <div class="inner">
+        <div class="label">WORK LOOP</div>
+        <h2>Codex로 일할 때 실제로 일어나는 일</h2>
         <div class="loop-wrap">
-          <div class="loop">
-            <div class="loop-title">Harness<br>Engineering</div>
-            <div class="node n1">템플릿</div>
-            <div class="node n2">파일 구조</div>
-            <div class="node n3">테스트</div>
-            <div class="node n4">자동화</div>
-            <div class="node n5">검수</div>
+          <div class="loop" aria-hidden="true">
+            <div class="loop-title">Codex<br>작업 루프</div>
+            <div class="node n1">요청</div>
+            <div class="node n2">파일 수정</div>
+            <div class="node n3">실행</div>
+            <div class="node n4">확인</div>
+            <div class="node n5">재요청</div>
           </div>
           <div>
-            <div class="label">REPEATABLE SYSTEM</div>
-            <h2>잘 쓰는 사람은 프롬프트가 아니라<br>반복 가능한 작업 장치를 만듭니다.</h2>
-            <p class="subtitle">문항 생성, 해설 검토, 블로그 글 작성, 카드뉴스 생성이 매번 같은 기준으로 돌아가게 만드는 것입니다.</p>
+            <h2 style="font-size: 54px;">AI가 대신하는 것은<br>타이핑이 아니라 <span class="accent-mint">작업 진행</span>입니다.</h2>
+            <p class="subtitle">사람은 목표와 기준을 주고, 결과를 검토하고, 다음 수정 방향을 결정합니다.</p>
           </div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">14 / 19</div>
       <div class="inner">
-        <div class="label">MATH CONTEXT TEMPLATE</div>
-        <h2>수학강사용 컨텍스트를<br>표준화하면 결과가 안정됩니다.</h2>
+        <div class="label">REQUEST STRUCTURE</div>
+        <h2>좋은 요청은 다섯 가지를 같이 줍니다.</h2>
+        <div class="steps five">
+          <div class="step small-step"><div class="step-num accent-blue">GOAL</div><h3>목표</h3><p>무엇을 만들지</p></div>
+          <div class="step small-step"><div class="step-num accent-mint">DATA</div><h3>자료</h3><p>어떤 정보를 쓸지</p></div>
+          <div class="step small-step"><div class="step-num accent-yellow">RULE</div><h3>제약</h3><p>무엇을 피할지</p></div>
+          <div class="step small-step"><div class="step-num accent-purple">FORMAT</div><h3>출력</h3><p>어떤 형태로 받을지</p></div>
+          <div class="step small-step"><div class="step-num accent-pink">CHECK</div><h3>검증</h3><p>무엇을 확인할지</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">COMMON EXAMPLE</div>
+        <h2>이제 같은 문제로<br>세 가지 핸들링 구조를 비교합니다.</h2>
+        <div class="split">
+          <div class="card soft">
+            <span class="pill">예시 문제</span>
+            <h3>손풀이 제작 AI</h3>
+            <p class="subtitle" style="font-size: 28px;">함수 f(x)=x^3-3x^2+2의 극값을 구하고, 그래프 개형을 설명하시오.</p>
+          </div>
+          <div class="card soft">
+            <span class="pill">원하는 결과</span>
+            <ul>
+              <li>핵심 아이디어가 먼저 보인다.</li>
+              <li>미분과 부호 판단 과정이 빠지지 않는다.</li>
+              <li>학생이 자주 하는 실수와 검산 항목이 들어간다.</li>
+              <li>수업 준비용 손풀이 흐름으로 정리된다.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">PROMPT ENGINEERING</div>
+        <h2>프롬프트 엔지니어링은<br><span class="accent-blue">한 번의 요청</span>을 잘 쓰는 기술입니다.</h2>
+        <div class="two-col top">
+          <div class="code small-code">너는 고등학교 수학 강사야.
+아래 문제를 학생용 손풀이 해설로 작성해줘.
+
+출력 형식:
+1. 핵심 아이디어
+2. 미분과 부호 판단
+3. 그래프 개형 설명
+4. 학생이 자주 하는 실수
+5. 최종 답</div>
+          <div>
+            <div class="keyword-grid" style="margin-top: 0;">
+              <div class="keyword"><strong>장점</strong><em>빠르게 해설 초안이 나온다.</em></div>
+              <div class="keyword"><strong>한계</strong><em>학생 수준과 강사 스타일이 매번 흔들릴 수 있다.</em></div>
+            </div>
+            <p class="quote" style="font-size: 31px;">좋은 질문은 좋은 초안을 만들지만, 반복 가능한 시스템은 아직 아닙니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">CONTEXT ENGINEERING</div>
+        <h2>컨텍스트 엔지니어링은<br>AI가 <span class="accent-mint">내 수업을 이해</span>하게 만드는 기술입니다.</h2>
+        <div class="two-col top">
+          <div class="code small-code">수업 컨텍스트:
+- 대상: 고2 중위권 학생
+- 현재 진도: 극대/극소 개념 도입
+- 수업 목표: f'(x)=0보다 부호 변화 강조
+- 자주 하는 실수: 모든 정지점을 극값으로 판단
+- 해설 톤: 시험 직전 손풀이 노트처럼 간결하게</div>
+          <div>
+            <div class="keyword-grid" style="margin-top: 0;">
+              <div class="keyword"><strong>장점</strong><em>내 학생과 수업 흐름에 맞는 해설이 나온다.</em></div>
+              <div class="keyword"><strong>한계</strong><em>컨텍스트가 부정확하면 결과도 그 방향으로 치우친다.</em></div>
+            </div>
+            <p class="quote" style="font-size: 31px;">좋은 배경을 주면 AI는 정답보다 수업에 맞는 설명을 만들기 시작합니다.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">HARNESS ENGINEERING</div>
+        <h2>하네스 엔지니어링은<br><span class="accent-yellow">반복 가능한 작업 구조</span>를 만드는 기술입니다.</h2>
+        <div class="two-col top">
+          <div class="file-tree">hand-solution-ai/
+  input/
+    problem.md
+  context/
+    class-profile.md
+    teacher-style.md
+  templates/
+    solution-template.md
+  checks/
+    solution-checklist.md
+  output/
+    solution-draft.md</div>
+          <div>
+            <div class="checklist" style="margin-top: 0;">
+              <div class="check">입력 문제를 읽는다.</div>
+              <div class="check">수업 컨텍스트와 강사 스타일을 반영한다.</div>
+              <div class="check">템플릿에 맞춰 해설을 작성한다.</div>
+              <div class="check">체크리스트로 검증 후 결과를 저장한다.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">DIFFERENCE</div>
+        <h2>세 방식은 결과물의<br>안정성과 반복성에서 차이가 납니다.</h2>
+        <table class="table">
+          <thead>
+            <tr><th>기준</th><th>프롬프트</th><th>컨텍스트</th><th>하네스</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>비유</td><td>좋은 질문</td><td>좋은 배경 제공</td><td>좋은 작업 시스템</td></tr>
+            <tr><td>결과</td><td>해설 초안</td><td>내 학생에게 맞춘 해설</td><td>반복 생산 가능한 해설 흐름</td></tr>
+            <tr><td>장점</td><td>빠르다</td><td>맞춤성이 좋다</td><td>일관성과 검증 가능성이 좋다</td></tr>
+            <tr><td>약점</td><td>흔들린다</td><td>맥락 관리가 필요하다</td><td>초기 설계가 필요하다</td></tr>
+          </tbody>
+        </table>
+        <p class="meta">좋은 질문에서 좋은 배경 제공으로, 그리고 좋은 작업 시스템으로 확장됩니다.</p>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">CONTEXT TEMPLATE</div>
+        <h2>강사용 컨텍스트는<br>매번 새로 쓰지 않게 템플릿화합니다.</h2>
+        <div class="keyword-grid three wide">
+          <div class="keyword tall"><strong>수업 정보</strong><em>학년, 단원, 진도, 이번 수업 목표</em></div>
+          <div class="keyword tall"><strong>학생 정보</strong><em>수준, 자주 하는 실수, 필요한 보충</em></div>
+          <div class="keyword tall"><strong>강사 스타일</strong><em>설명 톤, 판서 방식, 강조 표현</em></div>
+          <div class="keyword tall"><strong>출력 형식</strong><em>표, 손풀이, 블로그, 카드뉴스, HTML</em></div>
+          <div class="keyword tall"><strong>금지 사항</strong><em>개인정보, 유료 자료 원문, 확인 안 된 주장</em></div>
+          <div class="keyword tall"><strong>검증 기준</strong><em>계산, 논리, 난이도, 표현, 작동 여부</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
+      <div class="inner">
+        <div class="label">CHECK BEFORE TRUST</div>
+        <h2>AI 결과물은 완성품이 아니라<br><span class="accent-red">검토해야 할 초안</span>입니다.</h2>
         <div class="checklist">
-          <div class="check">학년 / 과목 / 단원</div>
-          <div class="check">학생 수준과 목표</div>
-          <div class="check">난이도와 자주 하는 실수</div>
-          <div class="check">출력 형식과 예시 답안</div>
-          <div class="check">금지사항과 검수 기준</div>
+          <div class="check">수학 계산과 논리 전개가 맞는가?</div>
+          <div class="check">학생 수준에 비해 설명이 너무 어렵거나 쉬운가?</div>
+          <div class="check">개인정보와 민감정보가 들어가 있지 않은가?</div>
+          <div class="check">출처와 저작권 문제가 생길 자료를 쓰지 않았는가?</div>
+          <div class="check">앱이나 HTML이라면 실제로 열리고 작동하는가?</div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">15 / 19</div>
       <div class="inner">
-        <div class="label">REQUEST PATTERN</div>
-        <h2>목표, 자료, 제약, 검증 기준을 함께 주면 시행착오가 줄어듭니다.</h2>
-        <div class="formula">
-          <div class="formula-row"><strong>목표</strong><span>무엇을 만들거나 해결할지</span></div>
-          <div class="formula-row"><strong>자료</strong><span>어떤 문항, 교재, 데이터, 예시를 참고할지</span></div>
-          <div class="formula-row"><strong>제약</strong><span>무엇을 피하고 어떤 기준을 지킬지</span></div>
-          <div class="formula-row"><strong>형식</strong><span>표, 글, 코드, HTML 등 어떤 형태로 받을지</span></div>
-          <div class="formula-row"><strong>검증</strong><span>결과가 맞는지 무엇으로 확인할지</span></div>
+        <div class="label">LIVE DEMO</div>
+        <h2>Codex 데모:<br>손풀이 초안 파일 만들기</h2>
+        <div class="steps">
+          <div class="step"><div class="step-num">01</div><h3>폴더 열기</h3><p>`vibe-coding-practice`를 작업 폴더로 선택</p></div>
+          <div class="step"><div class="step-num">02</div><h3>문제 입력</h3><p>가상 미분 문제와 원하는 출력 형식 제공</p></div>
+          <div class="step"><div class="step-num">03</div><h3>파일 생성</h3><p>`sample-problem.md`에 해설 초안 저장</p></div>
+          <div class="step"><div class="step-num">04</div><h3>수정 요청</h3><p>오답 포인트와 검산 체크리스트 추가</p></div>
         </div>
+        <p class="meta">현장에서는 큰 앱보다 작은 파일 하나를 끝까지 수정하는 흐름을 보여주는 것이 더 중요합니다.</p>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">16 / 19</div>
+      <div class="inner">
+        <div class="label">DEMO REVIEW</div>
+        <h2>좋은 데모는 한 번에 크게 맡기지 않고,<br>작게 나누고 확인합니다.</h2>
+        <div class="keyword-grid wide">
+          <div class="keyword"><strong>작업 분해</strong><em>문제 입력, 해설 생성, 검산 추가, 표현 수정</em></div>
+          <div class="keyword"><strong>파일 확인</strong><em>AI가 실제로 만든 파일을 사람이 열어본다.</em></div>
+          <div class="keyword"><strong>수정 기준</strong><em>틀린 계산, 빠진 설명, 학생 수준을 다시 요청한다.</em></div>
+          <div class="keyword"><strong>완료 기준</strong><em>수업 준비에 바로 검토 가능한 초안이면 성공이다.</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
       <div class="inner">
         <div class="showcase">
           <div>
             <div class="label">PROJECT SHOWCASE 01</div>
             <h2>손풀이 제작 AI</h2>
-            <p class="subtitle">수학 강사의 해설 제작 노하우를 AI 작업 흐름으로 바꿉니다.</p>
-            <div class="mini-bars">
-              <div class="mini-bar"><strong>문제 입력</strong><div class="bar-track"><div class="bar-fill" style="width:72%"></div></div></div>
-              <div class="mini-bar"><strong>풀이 구조</strong><div class="bar-track"><div class="bar-fill" style="width:86%"></div></div></div>
-              <div class="mini-bar"><strong>해설 검토</strong><div class="bar-track"><div class="bar-fill" style="width:64%"></div></div></div>
-            </div>
-          </div>
-          <div class="shot-grid">
-            <div class="shot light crop-hand" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 1 크게 보기">
-              <img src="assets/showcase-hand-solution-01.png" alt="손풀이 제작 AI 예시 1" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부1<br>showcase-hand-solution-01.png</div>
-            </div>
-            <div class="shot light crop-hand" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 2 크게 보기">
-              <img src="assets/showcase-hand-solution-02.png" alt="손풀이 제작 AI 예시 2" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부2<br>showcase-hand-solution-02.png</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">17 / 19</div>
-      <div class="inner">
-        <div class="showcase-wide">
-          <div>
-            <div class="label">PROJECT SHOWCASE 02</div>
-            <h2>학생 관리앱 개발</h2>
-            <p class="subtitle">Signature-v2는 강사의 운영 방식을 직접 쓰는 업무 도구로 바꾸는 예시입니다.</p>
-            <p class="small" style="margin-top: 28px;">관리자 대시보드 · 개인 문항DB · 학생 대시보드 · 테스트 리포트</p>
-          </div>
-          <div class="shot-grid">
-            <div class="shot crop-admin" role="button" tabindex="0" aria-label="관리자 대시보드 크게 보기">
-              <img src="assets/showcase-signature-admin-dashboard.png" alt="관리자 대시보드" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부3<br>관리자 대시보드</div>
-            </div>
-            <div class="shot crop-db" role="button" tabindex="0" aria-label="개인 문항DB 크게 보기">
-              <img src="assets/showcase-signature-question-db.png" alt="개인 문항DB" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부4<br>개인 문항DB</div>
-            </div>
-            <div class="shot crop-student" role="button" tabindex="0" aria-label="학생 대시보드 크게 보기">
-              <img src="assets/showcase-signature-student-dashboard.png" alt="학생 대시보드" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부5<br>학생 대시보드</div>
-            </div>
-            <div class="shot crop-report" role="button" tabindex="0" aria-label="학생 테스트 리포트 크게 보기">
-              <img src="assets/showcase-signature-test-report.png" alt="학생 테스트 리포트" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부6<br>학생 테스트 리포트</div>
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
-    </section>
-
-    <section class="slide">
-      <div class="slide-no">18 / 19</div>
-      <div class="inner">
-        <div class="showcase">
-          <div>
-            <div class="label">PROJECT SHOWCASE 03</div>
-            <h2>블로그 자동화</h2>
-            <p class="subtitle">수업 철학과 생각을 컨텍스트로 쌓으면 콘텐츠 제작도 자동화할 수 있습니다.</p>
+            <p class="subtitle">강사의 풀이 노하우를 손풀이 해설, 그래프, 검산, 주의점이 포함된 제작 흐름으로 바꿉니다.</p>
             <div class="checklist" style="margin-top: 34px;">
-              <div class="check">수업 정보와 생각 저장</div>
-              <div class="check">AI가 지침으로 이해</div>
-              <div class="check">주제 선정 → 글 작성 → 카드뉴스 생성</div>
+              <div class="check">핵심 아이디어 추출</div>
+              <div class="check">풀이 단계와 그래프 정리</div>
+              <div class="check">학생 실수와 검산 항목 추가</div>
             </div>
           </div>
-          <div class="shot-grid blog-stack">
-            <div class="shot light crop-blog" role="button" tabindex="0" aria-label="블로그 자동화 카드뉴스 결과 예시 크게 보기">
-              <img src="assets/showcase-blog-automation.png" alt="블로그 자동화 카드뉴스 결과 예시" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">첨부7<br>showcase-blog-automation.png</div>
+          <div class="shot-grid">
+            <div class="shot crop-hand light" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 1 크게 보기">
+              <img src="assets/showcase-hand-solution-01.png" alt="손풀이 제작 AI 예시 1" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">손풀이 제작 AI 예시 1</div>
             </div>
-            <div class="shot light crop-blog-text" role="button" tabindex="0" aria-label="블로그 자동화 글 본문 예시 크게 보기">
-              <img src="assets/showcase-blog-automation-text.png" alt="블로그 자동화 글 본문 예시" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
-              <div class="fallback">블로그 글 본문<br>showcase-blog-automation-text.png</div>
+            <div class="shot crop-hand light" role="button" tabindex="0" aria-label="손풀이 제작 AI 예시 2 크게 보기">
+              <img src="assets/showcase-hand-solution-02.png" alt="손풀이 제작 AI 예시 2" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+              <div class="fallback">손풀이 제작 AI 예시 2</div>
             </div>
           </div>
         </div>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
 
     <section class="slide">
-      <div class="slide-no">19 / 19</div>
+      <div class="inner">
+        <div class="label">PROJECT SHOWCASE 02</div>
+        <h2>학생 관리앱과 블로그 자동화</h2>
+        <p class="subtitle">수업 운영과 콘텐츠 제작도 강사의 방식에 맞춘 도구로 확장할 수 있습니다.</p>
+        <div class="shot-grid three" style="margin-top: 44px;">
+          <div class="shot compact crop-admin" role="button" tabindex="0" aria-label="관리자 대시보드 크게 보기">
+            <img src="assets/showcase-signature-admin-dashboard.png" alt="관리자 대시보드" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+            <div class="fallback">관리자 대시보드</div>
+          </div>
+          <div class="shot compact crop-report" role="button" tabindex="0" aria-label="학생 테스트 리포트 크게 보기">
+            <img src="assets/showcase-signature-test-report.png" alt="학생 테스트 리포트" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+            <div class="fallback">학생 테스트 리포트</div>
+          </div>
+          <div class="shot compact light crop-blog" role="button" tabindex="0" aria-label="블로그 자동화 카드뉴스 크게 보기">
+            <img src="assets/showcase-blog-automation.png" alt="블로그 자동화 카드뉴스" onload="this.nextElementSibling.style.display='none'" onerror="this.style.display='none'">
+            <div class="fallback">블로그 자동화</div>
+          </div>
+        </div>
+        <div class="keyword-grid three wide" style="margin-top: 28px;">
+          <div class="keyword"><strong>학생 관리앱</strong><em>관리자 대시보드, 문항DB, 학생 화면, 테스트 리포트</em></div>
+          <div class="keyword"><strong>블로그 자동화</strong><em>수업 정보와 생각을 컨텍스트로 저장해 글과 카드뉴스 생성</em></div>
+          <div class="keyword"><strong>공통 원리</strong><em>가상 데이터로 시작하고 검증 기준을 반복해서 보강</em></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="slide">
       <div class="inner">
         <div class="label">NEXT STEP</div>
-        <h2>오늘부터 작은 문제 하나를 정하고,<br>반복 루프를 경험해봅시다.</h2>
-        <div class="keyword-grid">
+        <h2>오늘부터 작은 문제 하나를 정하고,<br>후속 스터디에서<br>실제 개발 과정을 공유합니다.</h2>
+        <div class="keyword-grid wide">
           <div class="keyword"><strong>작은 업무 하나</strong><em>문제, 피드백, 안내문, 도구 중 하나</em></div>
           <div class="keyword"><strong>가상 데이터</strong><em>민감정보 없이 안전하게 실험</em></div>
           <div class="keyword"><strong>목표와 기준</strong><em>AI가 일할 수 있게 명확히 제공</em></div>
@@ -1272,14 +1292,15 @@
         </div>
         <p class="meta">아이디어를 함께 모으고, 각자의 수업과 운영 방식에 맞는 도구를 실험합니다.</p>
       </div>
-      <div class="progress"><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span></div>
     </section>
   </main>
+
   <div class="lightbox" id="lightbox" aria-modal="true" role="dialog" aria-label="이미지 크게 보기">
     <div class="lightbox-title" id="lightboxTitle"></div>
     <button type="button" class="lightbox-close" id="lightboxClose" aria-label="닫기">×</button>
     <img id="lightboxImage" src="" alt="">
   </div>
+
   <script>
     (() => {
       if (new URLSearchParams(location.search).get("preview") === "1") {
@@ -1299,6 +1320,22 @@
       let current = 0;
 
       const clamp = (value) => Math.max(0, Math.min(slides.length - 1, value));
+      const progressHtml = "<span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>";
+
+      slides.forEach((slide, idx) => {
+        if (idx > 0 && !slide.querySelector(".slide-no")) {
+          const no = document.createElement("div");
+          no.className = "slide-no";
+          no.textContent = `${String(idx + 1).padStart(2, "0")} / ${slides.length}`;
+          slide.appendChild(no);
+        }
+        if (!slide.querySelector(".progress")) {
+          const progress = document.createElement("div");
+          progress.className = "progress";
+          progress.innerHTML = progressHtml;
+          slide.appendChild(progress);
+        }
+      });
 
       function setScale() {
         const scale = Math.min(window.innerWidth / 1920, window.innerHeight / 1080);
@@ -1319,13 +1356,8 @@
         }
       }
 
-      function next() {
-        showSlide(current + 1);
-      }
-
-      function prev() {
-        showSlide(current - 1);
-      }
+      function next() { showSlide(current + 1); }
+      function prev() { showSlide(current - 1); }
 
       function toggleOverview() {
         document.body.classList.toggle("presenting");
@@ -1411,3 +1443,4 @@
   </script>
 </body>
 </html>
+
