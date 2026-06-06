@@ -1111,23 +1111,29 @@
     <section class="slide">
       <div class="inner">
         <div class="label">02. AI HANDLING</div>
-        <h2>같은 문제라도<br>AI에게 주는 구조에 따라 결과가 달라집니다.</h2>
+        <h2>AI 팁은 빨리 낡고,<br>업무 구조는 오래 남습니다.</h2>
         <div class="two-col top">
           <div class="card soft">
-            <span class="pill">예시 문제</span>
-            <h3>손풀이 제작 AI</h3>
-            <p class="subtitle" style="font-size: 28px;">함수 f(x)=x^3-3x^2+2의 극값을 구하고, 그래프 개형을 설명하시오.</p>
+            <span class="pill">영상 핵심</span>
+            <h3>6개월 뒤에도 남길 것</h3>
+            <ul>
+              <li>특정 프롬프트, 도구 이름, 모델 순위는 금방 바뀐다.</li>
+              <li>컨텍스트 설계, 검증 루프, 하네스는 도구가 바뀌어도 남는다.</li>
+              <li>AI 학습은 저장보다 작은 실행으로 옮겨가야 한다.</li>
+            </ul>
           </div>
           <div class="card soft">
-            <span class="pill">원하는 결과</span>
+            <span class="pill">수학 강사에게 적용</span>
+            <h3>손풀이 AI도 질문보다 구조가 중요합니다.</h3>
             <ul>
-              <li>핵심 아이디어가 먼저 보인다.</li>
-              <li>미분과 부호 판단 과정이 빠지지 않는다.</li>
-              <li>학생이 자주 하는 실수와 검산 항목이 들어간다.</li>
-              <li>수업 준비용 손풀이 흐름으로 정리된다.</li>
+              <li>문제와 학생 수준을 정리한다.</li>
+              <li>해설 형식과 검증 기준을 문서화한다.</li>
+              <li>결과를 보고 다시 고치는 루프를 만든다.</li>
+              <li>작업 결과를 다음 수업 준비에 재사용한다.</li>
             </ul>
           </div>
         </div>
+        <p class="meta">참고: 바이브랩스, 「카파시는 옳았다 — AI 조언의 90%가 6개월 안에 사라지는 진짜 이유」, 2026.06.04</p>
       </div>
     </section>
 
@@ -1138,6 +1144,10 @@
         <div class="two-col top">
           <div class="code">너는 고등학교 수학 강사야.
 아래 문제를 학생용 손풀이 해설로 작성해줘.
+
+문제:
+함수 f(x)=x^3-3x^2+2의 극값을 구하고,
+그래프 개형을 설명하시오.
 
 출력 형식:
 1. 핵심 아이디어
@@ -1150,7 +1160,7 @@
               <div class="keyword"><strong>장점</strong><em>빠르게 해설 초안이 나온다.</em></div>
               <div class="keyword"><strong>한계</strong><em>학생 수준과 강사 스타일이 매번 흔들릴 수 있다.</em></div>
             </div>
-            <p class="quote" style="font-size: 31px;">좋은 질문은 좋은 초안을 만들지만, 반복 가능한 시스템은 아직 아닙니다.</p>
+            <p class="quote" style="font-size: 31px;">좋은 질문은 좋은 초안을 만들지만, 도구가 바뀌어도 남는 구조는 아직 아닙니다.</p>
           </div>
         </div>
       </div>
@@ -1172,7 +1182,7 @@
               <div class="keyword"><strong>장점</strong><em>내 학생과 수업 흐름에 맞는 해설이 나온다.</em></div>
               <div class="keyword"><strong>한계</strong><em>컨텍스트가 부정확하면 결과도 그 방향으로 치우친다.</em></div>
             </div>
-            <p class="quote" style="font-size: 31px;">좋은 배경을 주면 AI는 정답보다 수업에 맞는 설명을 만들기 시작합니다.</p>
+            <p class="quote" style="font-size: 31px;">도구가 바뀌어도 남는 것은 AI가 참고할 자료와 기준을 정리하는 능력입니다.</p>
           </div>
         </div>
       </div>
@@ -1199,7 +1209,7 @@
             <div class="check">입력 문제를 읽는다.</div>
             <div class="check">수업 컨텍스트와 강사 스타일을 반영한다.</div>
             <div class="check">템플릿에 맞춰 해설을 작성한다.</div>
-            <div class="check">체크리스트로 검증 후 결과를 저장한다.</div>
+            <div class="check">체크리스트로 검증하고 수정 루프를 남긴다.</div>
           </div>
         </div>
       </div>
@@ -1218,9 +1228,10 @@
             <tr><td>결과</td><td>해설 초안</td><td>내 학생에게 맞춘 해설</td><td>반복 생산 가능한 해설 흐름</td></tr>
             <tr><td>장점</td><td>빠르다</td><td>맞춤성이 좋다</td><td>일관성과 검증 가능성이 좋다</td></tr>
             <tr><td>약점</td><td>흔들린다</td><td>맥락 관리가 필요하다</td><td>초기 설계가 필요하다</td></tr>
+            <tr><td>수명</td><td>가장 빨리 낡음</td><td>재사용 가능</td><td>도구가 바뀌어도 남음</td></tr>
           </tbody>
         </table>
-        <p class="meta">좋은 질문에서 좋은 배경 제공으로, 그리고 좋은 작업 시스템으로 확장됩니다.</p>
+        <p class="meta">AI 학습은 최신 팁을 저장하는 일에서, 바뀌는 도구를 끼워 넣을 수 있는 작업 구조를 만드는 일로 옮겨갑니다.</p>
       </div>
     </section>
 
