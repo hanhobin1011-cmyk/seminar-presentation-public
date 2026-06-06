@@ -440,6 +440,96 @@
       outline: none;
     }
 
+    .doc-modal {
+      position: fixed;
+      inset: 0;
+      z-index: 120;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 42px;
+      background: rgba(0, 0, 0, 0.9);
+    }
+
+    .doc-modal.open { display: flex; }
+
+    .doc-window {
+      width: min(1420px, 94vw);
+      height: min(900px, 88vh);
+      display: grid;
+      grid-template-rows: 76px 1fr;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 10px;
+      overflow: hidden;
+      background: #0b0e14;
+      box-shadow: 0 24px 90px rgba(0, 0, 0, 0.72);
+    }
+
+    .doc-modal-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 0 24px 0 30px;
+      border-bottom: 1px solid var(--line);
+      background: #151922;
+    }
+
+    .doc-modal-title {
+      min-width: 0;
+      color: var(--text);
+      font-size: 24px;
+      line-height: 1.2;
+      font-weight: 900;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .doc-modal-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+
+    .doc-source-link,
+    .doc-close {
+      height: 44px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      border-radius: 8px;
+      background: #0f1420;
+      color: var(--text);
+      text-decoration: none;
+      font-size: 17px;
+      font-weight: 850;
+      cursor: pointer;
+    }
+
+    .doc-source-link { padding: 0 16px; }
+
+    .doc-close {
+      width: 44px;
+      font-size: 26px;
+      line-height: 1;
+    }
+
+    .doc-source-link:hover,
+    .doc-close:hover {
+      border-color: rgba(100, 168, 255, 0.72);
+      color: var(--blue);
+    }
+
+    .doc-frame {
+      width: 100%;
+      height: 100%;
+      border: 0;
+      background: #f7f8fb;
+    }
+
     .pill {
       display: inline-flex;
       align-items: center;
@@ -1133,7 +1223,7 @@
             <span class="pill">컨텍스트 엔지니어링</span>
             <h3 style="margin-top: 22px;">손풀이 AI의 그래프 작성 규칙</h3>
             <p class="small">그래프를 좌표 기반 그래프와 개형 스케치로 구분하고, 수학적 판단에 필요한 보조그림 기준을 문서로 고정합니다.</p>
-            <a class="doc-link" href="docs/hand-solution-ai/graph_drawing_rules.md" target="_blank" rel="noopener">
+            <a class="doc-link" href="docs/hand-solution-ai/graph_drawing_rules.html" data-doc-modal data-doc-id="graph" data-source-href="docs/hand-solution-ai/graph_drawing_rules.md" data-doc-title="graph_drawing_rules.md">
               graph_drawing_rules.md
               <span>AI가 그래프를 어떤 기준으로 그릴지 계속 참고하는 규칙 파일</span>
             </a>
@@ -1142,11 +1232,11 @@
             <span class="pill">하네스 엔지니어링</span>
             <h3 style="margin-top: 22px;">작업 절차와 체크리스트</h3>
             <p class="small">한 번의 지시가 아니라, 프로젝트 시작 절차와 검토 기준을 묶어 반복 가능한 작업 구조로 만듭니다.</p>
-            <a class="doc-link" href="docs/hand-solution-ai/README.md" target="_blank" rel="noopener">
+            <a class="doc-link" href="docs/hand-solution-ai/README.html" data-doc-modal data-doc-id="readme" data-source-href="docs/hand-solution-ai/README.md" data-doc-title="README.md">
               README.md
               <span>프로젝트 목적, 실행 순서, 검증 명령을 정리한 시작 문서</span>
             </a>
-            <a class="doc-link" href="docs/hand-solution-ai/Agent.md" target="_blank" rel="noopener">
+            <a class="doc-link" href="docs/hand-solution-ai/Agent.html" data-doc-modal data-doc-id="agent" data-source-href="docs/hand-solution-ai/Agent.md" data-doc-title="Agent.md">
               Agent.md
               <span>AI 에이전트가 세션마다 읽고 따라야 하는 작업 지휘서</span>
             </a>
@@ -1267,6 +1357,19 @@
     <img id="lightboxImage" src="" alt="">
   </div>
 
+  <div class="doc-modal" id="docModal" aria-modal="true" role="dialog" aria-label="문서 보기">
+    <div class="doc-window">
+      <div class="doc-modal-header">
+        <div class="doc-modal-title" id="docModalTitle">문서 보기</div>
+        <div class="doc-modal-actions">
+          <a class="doc-source-link" id="docSourceLink" href="#" target="_blank" rel="noopener">원문 MD</a>
+          <button type="button" class="doc-close" id="docModalClose" aria-label="닫기">×</button>
+        </div>
+      </div>
+      <iframe class="doc-frame" id="docFrame" title="문서 보기"></iframe>
+    </div>
+  </div>
+
   <script>
     (() => {
       if (new URLSearchParams(location.search).get("preview") === "1") {
@@ -1283,6 +1386,11 @@
       const lightboxImage = document.getElementById("lightboxImage");
       const lightboxTitle = document.getElementById("lightboxTitle");
       const lightboxClose = document.getElementById("lightboxClose");
+      const docModal = document.getElementById("docModal");
+      const docModalTitle = document.getElementById("docModalTitle");
+      const docModalClose = document.getElementById("docModalClose");
+      const docFrame = document.getElementById("docFrame");
+      const docSourceLink = document.getElementById("docSourceLink");
       let current = 0;
 
       const clamp = (value) => Math.max(0, Math.min(slides.length - 1, value));
@@ -1353,6 +1461,20 @@
         lightboxImage.src = "";
       }
 
+      function openDocModal(link) {
+        const docUrl = link.getAttribute("href");
+        const sourceUrl = link.dataset.sourceHref || docUrl;
+        docModalTitle.textContent = link.dataset.docTitle || link.textContent.trim() || "문서 보기";
+        docSourceLink.href = sourceUrl;
+        docFrame.src = docUrl;
+        docModal.classList.add("open");
+      }
+
+      function closeDocModal() {
+        docModal.classList.remove("open");
+        docFrame.src = "about:blank";
+      }
+
       function slideIndexFromHash() {
         const hashMatch = location.hash.match(/slide-(\d+)/);
         return hashMatch ? Number(hashMatch[1]) - 1 : 0;
@@ -1368,13 +1490,24 @@
         });
       });
 
+      document.querySelectorAll("[data-doc-modal]").forEach((link) => {
+        link.addEventListener("click", (event) => {
+          event.preventDefault();
+          openDocModal(link);
+        });
+      });
+
       prevButton.addEventListener("click", prev);
       nextButton.addEventListener("click", next);
       overviewButton.addEventListener("click", toggleOverview);
       fullscreenButton.addEventListener("click", toggleFullscreen);
       lightboxClose.addEventListener("click", closeLightbox);
+      docModalClose.addEventListener("click", closeDocModal);
       lightbox.addEventListener("click", (event) => {
         if (event.target === lightbox) closeLightbox();
+      });
+      docModal.addEventListener("click", (event) => {
+        if (event.target === docModal) closeDocModal();
       });
 
       document.addEventListener("fullscreenchange", () => {
@@ -1385,6 +1518,10 @@
       window.addEventListener("resize", setScale);
       window.addEventListener("hashchange", () => showSlide(slideIndexFromHash(), false));
       document.addEventListener("keydown", (event) => {
+        if (docModal.classList.contains("open")) {
+          if (event.key === "Escape") closeDocModal();
+          return;
+        }
         if (lightbox.classList.contains("open")) {
           if (event.key === "Escape") closeLightbox();
           return;
@@ -1405,6 +1542,12 @@
 
       setScale();
       showSlide(slideIndexFromHash(), false);
+
+      const initialDocId = new URLSearchParams(location.search).get("doc")?.replace(/[^a-z-]/g, "");
+      if (initialDocId) {
+        const initialDocLink = document.querySelector(`[data-doc-id="${initialDocId}"]`);
+        if (initialDocLink) openDocModal(initialDocLink);
+      }
     })();
   </script>
 </body>

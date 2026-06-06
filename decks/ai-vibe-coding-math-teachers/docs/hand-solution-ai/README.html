@@ -1,0 +1,113 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>프로젝트 README - README.md</title>
+  <style>
+    :root { color-scheme: light; }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      background: #f7f8fb;
+      color: #20242d;
+      font-family: Pretendard, "Noto Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", Arial, sans-serif;
+      line-height: 1.68;
+    }
+    main {
+      max-width: 980px;
+      margin: 0 auto;
+      padding: 44px 52px 72px;
+    }
+    .doc-meta {
+      display: inline-flex;
+      align-items: center;
+      min-height: 34px;
+      padding: 0 12px;
+      border-radius: 999px;
+      background: #e8f1ff;
+      color: #1f67c7;
+      font-size: 14px;
+      font-weight: 800;
+    }
+    h1, h2, h3, h4 { letter-spacing: 0; line-height: 1.22; color: #111827; }
+    h1 { margin: 18px 0 30px; font-size: 42px; font-weight: 900; }
+    h2 { margin: 42px 0 14px; padding-top: 28px; border-top: 1px solid #dbe2ec; font-size: 29px; font-weight: 900; }
+    h3 { margin: 30px 0 12px; font-size: 23px; font-weight: 900; }
+    h4 { margin: 24px 0 10px; font-size: 19px; font-weight: 900; }
+    p { margin: 12px 0; font-size: 18px; font-weight: 540; }
+    ul, ol { margin: 12px 0 18px; padding-left: 28px; }
+    li { margin: 6px 0; font-size: 18px; }
+    code {
+      padding: 2px 6px;
+      border-radius: 5px;
+      background: #eef2f8;
+      color: #1b4d8f;
+      font-family: "Cascadia Code", Consolas, monospace;
+      font-size: 0.92em;
+    }
+    pre {
+      margin: 18px 0 24px;
+      padding: 18px 20px;
+      overflow: auto;
+      border: 1px solid #d3dbe7;
+      border-radius: 8px;
+      background: #111827;
+      color: #ecf3ff;
+      line-height: 1.55;
+    }
+    pre code { padding: 0; background: transparent; color: inherit; font-size: 15px; }
+    a { color: #1f67c7; font-weight: 800; }
+    @media (max-width: 720px) {
+      main { padding: 28px 22px 48px; }
+      h1 { font-size: 32px; }
+      h2 { font-size: 24px; }
+      p, li { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="doc-meta">README.md</div>
+    <h1>손풀이 해설 프로젝트</h1>
+<p>수학 문제 이미지 또는 PDF를 입력받아, 학생이 따라갈 수 있는 한 장짜리 손풀이 해설 이미지를 만드는 프로젝트이다.</p>
+<h2>먼저 읽을 문서</h2>
+<ol>
+<li><code>Agent.md</code></li>
+<li><code>docs/context_notes.md</code></li>
+<li><code>docs/project_plan.md</code></li>
+<li><code>docs/checklist.md</code></li>
+<li><code>docs/development_environment_guide.md</code></li>
+<li><code>docs/solution_skills/advanced_skill_policy.md</code></li>
+<li><code>docs/solution_skills/distance_product.md</code></li>
+</ol>
+<h2>여러 장비에서 작업하는 방법</h2>
+<p>노트북과 로컬 PC를 번갈아 사용할 때는 Git 원격 저장소를 기준으로 작업한다.</p>
+<p>현재 GitHub 저장소:</p>
+<pre><code class="language-text">https://github.com/hanhobin1011-cmyk/handwritten-math-solution-ai</code></pre>
+<p>두 장비의 권장 프로젝트 폴더:</p>
+<pre><code class="language-powershell">C:\Users\&lt;사용자&gt;\Documents\손풀이 해설</code></pre>
+<p>PC에서 처음 세팅할 때:</p>
+<pre><code class="language-powershell">cd &quot;$env:USERPROFILE\Documents&quot;
+git clone https://github.com/hanhobin1011-cmyk/handwritten-math-solution-ai.git &quot;손풀이 해설&quot;
+cd &quot;손풀이 해설&quot;
+git status</code></pre>
+<p>처음 세팅할 때는 <code>.env.example</code>을 각 장비의 <code>.env</code>로 복사한 뒤 필요한 값을 채운다. <code>.env</code>는 Git에 올리지 않는다.</p>
+<p>작업 시작:</p>
+<pre><code class="language-powershell">git pull
+git status</code></pre>
+<p>작업 종료:</p>
+<pre><code class="language-powershell">git status
+git add &lt;변경파일&gt;
+git commit -m &quot;작업 내용 요약&quot;
+git push</code></pre>
+<p>자세한 기준은 <code>docs/development_environment_guide.md</code>를 따른다.</p>
+<h2>현재 검증 명령</h2>
+<p>기본 샘플 검증:</p>
+<pre><code class="language-powershell">node tools/validate_artifact.mjs test_problem_001</code></pre>
+<p>최근 작업 샘플 검증:</p>
+<pre><code class="language-powershell">node tools/validate_artifact.mjs problem_021</code></pre>
+<p>검증 결과는 <code>data/validation_reports/</code>에 저장된다.</p>
+  </main>
+</body>
+</html>
