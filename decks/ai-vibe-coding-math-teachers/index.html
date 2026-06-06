@@ -223,7 +223,7 @@
 
     .quote {
       max-width: 1120px;
-      margin-top: 54px;
+      margin-top: var(--section-gap);
       color: var(--muted);
       font-size: 34px;
       line-height: 1.38;
@@ -329,7 +329,11 @@
       height: 100%;
     }
 
-    .two-col.top { align-items: start; }
+    .two-col.top {
+      height: auto;
+      margin-top: var(--section-gap);
+      align-items: start;
+    }
 
     .agenda {
       display: grid;
@@ -363,7 +367,7 @@
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
       gap: 22px;
-      margin-top: 48px;
+      margin-top: var(--section-gap);
       max-width: 1030px;
     }
 
@@ -601,7 +605,7 @@
 
     .table {
       width: 100%;
-      margin-top: 48px;
+      margin-top: var(--section-gap);
       border-collapse: collapse;
       overflow: hidden;
       border: 1px solid var(--line);
@@ -637,7 +641,7 @@
     .table td:last-child { border-right: 0; }
 
     .code {
-      margin-top: 42px;
+      margin-top: var(--section-gap);
       padding: 28px 32px;
       border: 1px solid #303744;
       border-radius: 8px;
@@ -656,7 +660,7 @@
     }
 
     .file-tree {
-      margin-top: 42px;
+      margin-top: var(--section-gap);
       padding: 34px 38px;
       border: 1px solid #303744;
       border-radius: 8px;
