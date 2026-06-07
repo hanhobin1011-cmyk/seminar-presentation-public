@@ -978,6 +978,48 @@
       body:not(.presenting) { padding: 12px; }
     }
 
+    @media (max-width: 900px), (orientation: portrait) {
+      .deck-controls {
+        left: 50%;
+        right: auto;
+        bottom: max(8px, env(safe-area-inset-bottom));
+        max-width: calc(100vw - 16px);
+        gap: 5px;
+        padding: 6px;
+        transform: translateX(-50%);
+      }
+
+      .deck-controls button {
+        min-width: 34px;
+        height: 34px;
+        font-size: 14px;
+      }
+
+      .deck-controls .wide-control {
+        min-width: 52px;
+        padding: 0 8px;
+        font-size: 0;
+      }
+
+      #toggleOverview::after,
+      #toggleFullscreen::after {
+        font-size: 13px;
+      }
+
+      #toggleOverview::after {
+        content: "목록";
+      }
+
+      #toggleFullscreen::after {
+        content: "전체";
+      }
+
+      .slide-status {
+        min-width: 50px;
+        font-size: 13px;
+      }
+    }
+
     @media print {
       body {
         padding: 0;
